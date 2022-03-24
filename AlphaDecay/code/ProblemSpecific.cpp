@@ -46,10 +46,10 @@ struct Parameters get_parameters(){
      *                ¦----¦ 
      * ¦----¦----¦----¦----¦-*/
     
-    parameters.r.resize(N+3);
+    parameters.r.resize(N+2);
     parameters.r(0) = 0;
 
-    for (int j=0; j<N+2; j++)
+    for (int j=0; j<N+1; j++)
         // grid for barrier segments
         parameters.r(j+1) = j*(end_barrier-1)/N + 1;
 
@@ -57,16 +57,20 @@ struct Parameters get_parameters(){
      * vector V. The values are normalized
      * such that V(0) = -1. */
     parameters.V.resize(N+2);
+    parameters.omega.resize(N+2);
     parameters.V(0) = -1 + MAX_COULOMB;
 
 
-    for (int i=1; i<N+2; i++) 
+    for (int i=1; i<N+2; i++) {
         parameters.V(i) = MAX_COULOMB/parameters.r(i);
+        parameters.omega(i) = 0;    // initializing
+    }
     double d = parameters.V(N) - parameters.V(N+1);
     for (int i=1; i<N+2; i++) 
+        /* Shift the potential slightly so that 
+         * E not equal to V anywhere. */
         parameters.V(i) -= d/2;
     
-
     return parameters;
 }
 
@@ -77,7 +81,7 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
      * exponential functions, i.e. - for E>V and +
      * for E<V. - gives trigs and + gives exps. The 
      * vector we want to solve is 
-     *      ¦   A0   ¦   ---> This one we don't need
+     *      ¦   A0   ¦   ---> This one we set = 1
      *      ¦   B0   ¦
      *      ¦   A1   ¦
      *      ¦   B1   ¦ 
@@ -110,13 +114,14 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
 
     double r = paramsPTR -> r(1);    // =  1
     double omega = sqrt(alpha*(E-V));
+    paramsPTR -> omega(0) = omega;
 
     // Continuity at first bndry.
     A(1,0) = +exp(+1i*omega*r);
     A(1,1) = +exp(-1i*omega*r);
 
     // Continuity of deriv. at first bndry.
-    A(2,0) = +omega*exp(+1i*omega*r);
+    A(2,0) = +1i*omega*exp(+1i*omega*r);
     A(2,1) = -1i*omega*exp(-1i*omega*r);
 
     int M = N+3;    // Number of gridpoints
@@ -129,6 +134,7 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
             // Exponential functions
 
             omega = sqrt(alpha*(V-E));
+            paramsPTR -> omega(i) = omega;
 
             // Continuity of function to the left
             A(2*i-1,2*i+0) = -exp(+omega*r);
@@ -154,6 +160,7 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
             // Trigonometric functions
 
             omega = sqrt(alpha*(E-V));
+            paramsPTR -> omega(i) = omega;
 
             // Continuity of function to the left
             A(2*i-1,2*i+0) = -exp(+1i*omega*r);
@@ -190,6 +197,7 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
         // Exponential function
 
         omega = sqrt(alpha*(V-E));
+        paramsPTR -> omega(M-2) = omega;
 
         // Continuity of function to the left
         A(Q-2,Q-1) = -exp(-omega*r);
@@ -202,6 +210,7 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
         // Trigonometric function
 
         omega = sqrt(alpha*(E-V));
+        paramsPTR -> omega(M-2) = omega;
 
         // Continuity of function to the left
         A(Q-2,Q-1) = -exp(1i*omega*r);

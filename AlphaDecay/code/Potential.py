@@ -20,6 +20,8 @@ def main():
 
     r.append(Potential.X[-1])
     V.append(V[-1])
+    r.append(2*Potential.X[-1] - Potential.X[-2])
+    V.append(V[-1])
 
     E = get_energy()
 

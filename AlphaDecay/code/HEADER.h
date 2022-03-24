@@ -26,14 +26,15 @@ void check_fail(ofstream &OutStream);
 
 struct Parameters{
     
-    int N;                        // Number of gridpoints
+    int N;                             // Number of gridpoints
     int number_of_unknowns;
-    double E;                     // Total energy
-    double alpha;                 // Problem spec. constant
-    int Z;                        // Atomic number
-    int A;                        // Mass number
-    Matrix<double,Dynamic,1> r;   // Gridpoints
-    Matrix<double,Dynamic,1> V;   // Potential
+    double E;                          // Total energy
+    double alpha;                      // Problem spec. constant
+    int Z;                             // Atomic number
+    int A;                             // Mass number
+    Matrix<double,Dynamic,1> r;        // Gridpoints
+    Matrix<double,Dynamic,1> V;        // Potential
+    Matrix<double,Dynamic,1> omega;   // omegas in exp(omega*x)
 };
 
 Matrix<complex<double>,Dynamic,Dynamic> get_A(struct Parameters *);
