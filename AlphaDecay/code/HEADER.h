@@ -27,10 +27,11 @@ void check_fail(ofstream &OutStream);
 struct Parameters{
     
     int N;                        // Number of gridpoints
-    double dr;                    // Space interval
     int number_of_unknowns;
     double E;                     // Total energy
     double alpha;                 // Problem spec. constant
+    int Z;                        // Atomic number
+    int A;                        // Mass number
     Matrix<double,Dynamic,1> r;   // Gridpoints
     Matrix<double,Dynamic,1> V;   // Potential
 };

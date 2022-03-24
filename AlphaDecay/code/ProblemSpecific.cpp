@@ -6,49 +6,66 @@ struct Parameters get_parameters(){
     struct Parameters parameters;
 
     int N;
-    cout << "Write number of grid points N: ";
+    cout << "Write number of barrier segments N: ";
     cin  >> N;
     parameters.N = N;
-    parameters.number_of_unknowns = 2*N-1;
+    parameters.number_of_unknowns = 2*N+3;
 
-    double dr;
-    cout << "Write space interval in Coulomb region: ";
-    cin  >> dr;
-    parameters.dr = dr;
-
+    double E;
     cout << "Write energy E: ";
-    cin  >> parameters.E;
+    cin  >> E;
+    parameters.E = E;
 
-    int Z = 212;   //polonium example, change this to own param.
-    int A = 84;
-    double end_barrier = BARRIERCONST;
-    end_barrier *= (Z-2)/(pow(4.0,1/3)+pow(A-4.0,1/3));
-    end_barrier /= E;
-
+    // Check this better 
     cout << "Write alpha: ";
     cin  >> parameters.alpha;
+    
+    int Z;
+    cout << "Write atom number Z of parent nucleus: ";
+    cin  >> Z;
+    parameters.Z = Z;
+
+    int A;
+    cout << "Write mass number A of parent nucleus: ";
+    cin  >> A;
+    parameters.A = A;
+
+    double end_barrier = BARRIERCONST;
+    end_barrier *= (Z-2)/(pow(4.0,0.333)+pow(A-4.0,0.333));
+    double MAX_COULOMB = end_barrier;
+    end_barrier /= E;
+
 
     /* Write grid points in vector r. 
      * The distance is normalized with
      * the length of the lowest potential
-     * V0, hence r(1) = 1. */
-    parameters.r.resize(parameters.N);
+     * V0, hence r(1) = 1. 
+     * ¦----¦               
+     *      ¦----¦          barrier with N=3
+     *           ¦----¦     last segnemt is <E
+     *                ¦----¦ 
+     * ¦----¦----¦----¦----¦-*/
+    
+    parameters.r.resize(N+3);
     parameters.r(0) = 0;
-    parameters.r(1) = 1;
 
-    for (int i=2; i<parameters.N; i++) 
-        parameters.r(i) = 1+(i-1)*dr;
+    for (int j=0; j<N+2; j++)
+        // grid for barrier segments
+        parameters.r(j+1) = j*(end_barrier-1)/N + 1;
 
     /* Write values of the potential in
      * vector V. The values are normalized
      * such that V(0) = -1. */
-    parameters.V.resize(parameters.N);
-    parameters.V(0) = -1;
+    parameters.V.resize(N+2);
+    parameters.V(0) = -1 + MAX_COULOMB;
 
-    double MAX_COULOMB = 1;    // This can be changed
 
-    for (int i=1; i<parameters.N; i++) 
+    for (int i=1; i<N+2; i++) 
         parameters.V(i) = MAX_COULOMB/parameters.r(i);
+    double d = parameters.V(N) - parameters.V(N+1);
+    for (int i=1; i<N+2; i++) 
+        parameters.V(i) -= d/2;
+    
 
     return parameters;
 }
@@ -75,6 +92,7 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
     int    N     = paramsPTR -> N;
     double alpha = paramsPTR -> alpha;
     double E     = paramsPTR -> E;
+
     
     /* Construction of the matrix A. It is 
      * (2N-1)x(2N-1) where N is grid points. */
@@ -84,7 +102,7 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
     // First equation
     A(0,0) = 1;
     
-    double V = paramsPTR -> V(0);    // = -1
+    double V = paramsPTR -> V(0);    
     if (V>=E){
         cout << "The energy must be higher than V0. Terminating ..." << endl;
         exit(1);
@@ -101,7 +119,8 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
     A(2,0) = +omega*exp(+1i*omega*r);
     A(2,1) = -1i*omega*exp(-1i*omega*r);
 
-    for (int i=1; i<N-1; i++){
+    int M = N+3;    // Number of gridpoints
+    for (int i=1; i<M-2; i++){
         
         V = paramsPTR -> V(i);
         r = paramsPTR -> r(i);
@@ -164,8 +183,8 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
     }
 
     // The last bndry.
-    r = paramsPTR -> r(N-1);
-    V = paramsPTR -> V(N-1);
+    r = paramsPTR -> r(M-2);
+    V = paramsPTR -> V(M-2);
 
     if (V>E) {
         // Exponential function
@@ -173,10 +192,10 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
         omega = sqrt(alpha*(V-E));
 
         // Continuity of function to the left
-        A(2*N-3,2*N-2) = -exp(-omega*r);
+        A(Q-2,Q-1) = -exp(-omega*r);
 
         // Continuity of deriv. to the left 
-        A(2*N-2,2*N-2) = +omega*exp(-omega*r);
+        A(Q-1,Q-1) = +omega*exp(-omega*r);
     } else {
 
     if (V<E) {
@@ -185,10 +204,10 @@ MatrixXcd get_A(struct Parameters *paramsPTR){
         omega = sqrt(alpha*(E-V));
 
         // Continuity of function to the left
-        A(2*N-3,2*N-2) = -exp(1i*omega*r);
+        A(Q-2,Q-1) = -exp(1i*omega*r);
 
         // Continuity of deriv. to the left 
-        A(2*N-2,2*N-2) = -1i*omega*exp(1i*omega*r);
+        A(Q-1,Q-1) = -1i*omega*exp(1i*omega*r);
     
     } else { 
         /* Linear function. Haven't taken this
