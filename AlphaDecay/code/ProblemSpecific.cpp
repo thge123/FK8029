@@ -70,15 +70,14 @@ struct Parameters get_parameters(){
         parameters.omega(i) = 0;    // initializing
     }
 
-    double d = parameters.V(N)-parameters.V(N+1);
+    double d = parameters.V(N+M) - parameters.V(N+M+1);
     for (int i=0; i<N+1+M; i++) 
         /* Shift the potential slightly so that 
          * E not equal to V anywhere. */
         parameters.V(i+1) -= d/2;
 
-    //for (int j=0; j<N+1+M; j++)
-    //    // grid for barrier segments
-    //    parameters.r(j+1) -= 2* start_barrier;
+    parameters.V(N+M+1) = 0;
+
     return parameters;
 }
 
