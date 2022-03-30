@@ -3,13 +3,13 @@ import FILES
 from numpy import exp,cos,sin,log
 from os import listdir
 
-def get_data(number):
-    numberstr = FILES.number2string(number)
+def get_data(Dir,number2):
+    numberstr = FILES.number2string(number2)
 
-    r      = FILES.get_data('R/R{}.dat'.format(numberstr))
-    omega  = FILES.get_data('O/O{}.dat'.format(numberstr))
-    Coeffs = FILES.get_data('X/X{}.dat'.format(numberstr),Complex = True)
-    V      = FILES.get_data('V/V{}.dat'.format(numberstr))
+    r      = FILES.get_data(Dir+'/R/R{}.dat'.format(numberstr))
+    omega  = FILES.get_data(Dir+'/O/O{}.dat'.format(numberstr))
+    Coeffs = FILES.get_data(Dir+'/X/X{}.dat'.format(numberstr),Complex = True)
+    V      = FILES.get_data(Dir+'/V/V{}.dat'.format(numberstr))
     
     return r,omega,Coeffs,V
 

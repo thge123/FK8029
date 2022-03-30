@@ -1,0 +1,47 @@
+\documentclass[twocolumn]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,physics,blindtext,graphicx}
+\usepackage[a4paper,total={7.5in,10in}]{geometry}
+
+\begin{document}
+\begin{large}
+\section*{Some title}
+The time independent Schrödinger equation for the harmonic oscillator is 
+\begin{equation}
+    -\frac{\hbar}{2m}\frac{\text{d}^2u}{\text{d}x^2} + \frac{m\omega^2}{2}x^2 = Eu
+\end{equation}
+By changing the variables with $\xi = x/\sqrt{\hbar/m\omega}$ and $E' = \hbar\omega$, it can be written as 
+\begin{equation}
+    \label{29mar1748}
+    -\frac{\text{d}^2u}{\text{d}\xi^2} + \xi^2u = 2E'u
+\end{equation}
+
+\subsection*{Numerical solution to eigenvalue problem}
+We wish to solve \eqref{29mar1748} numerically by discretizing the real line and the second derivative of $u$. In order to do so, we introduce the gridpoints $\xi_j$ and the approximation of the function $u$ at these gridpoints, $u_j\approx u(\xi_j)$. Furthermore, we assume that $\xi_j\in[-L,L]$, where $L$ is chosen such that $u(\xi)\approx 0$ for $|\xi|>L$. Since the eigenfunctions of an even potential can be taken to be even or odd, we can focus on the interval $[0,L]$ and apply the boundary conditions 
+\begin{equation}
+    \begin{split}
+        &u'(0) = 0 \quad\text{and}\quad u(L) = 0 \quad \text{for even } u, \\ 
+        &u(0) = 0 \quad\text{and}\quad u(L) = 0 \quad \text{for odd } u.
+    \end{split}
+\end{equation} 
+The second derivative is approximated up to fourth order:
+\begin{equation}
+    \begin{split}
+        u''(x_j) &\approx \frac{1}{12h^2}\big(-u_{j-2}+16u_{j-1}-30u_j \\ 
+        &\hspace{1.7cm}+16u_{j+1}-u_{j+2}\big) 
+    \end{split}
+\end{equation}
+Special care had to be taken at the boundaries. For the even case, two ghost points, $\xi_{-1}$ and $\xi_{-2}$, were introduced to the left of zero and two fourth order approximations of the first derivative used to  (... words ...) :
+
+\begin{equation}
+    \begin{split}
+        &u'(0) \approx \frac{1}{12h}\left(u_{-2}-8u_{-1}+8u_1-u_2\right) \\ 
+        &u'(0) \approx \frac{1}{12h}\left(-3u_{-1}-10u_0+18u_1-6u_2+u_3\right)
+    \end{split}
+\end{equation}
+
+
+
+\end{large}
+\end{document}

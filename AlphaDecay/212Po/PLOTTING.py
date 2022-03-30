@@ -11,7 +11,7 @@ rcParams.update({
 rcParams['figure.figsize'] = [j*1.5 for j in rcParams['figure.figsize']]
 rcParams['axes.labelsize'] = 22 
 rcParams['figure.subplot.bottom'] = 0.11
-rcParams['figure.subplot.left'] = 0.110
+rcParams['figure.subplot.left'] = 0.120
 rcParams['figure.subplot.right'] = 0.99
 rcParams['figure.subplot.top'] = 0.95
 rcParams['mathtext.fontset'] = 'stix'

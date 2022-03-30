@@ -3,9 +3,9 @@ import FILES
 from Density import get_data 
 from os import listdir
 
-def scatter_TR(ax,filenumber):
+def scatter_TR(ax,Dir,filenumber,Marker,Color):
     
-    r,omega,Coeffs,V = get_data(filenumber)
+    r,omega,Coeffs,V = get_data(Dir,filenumber)
     A = Coeffs[0]
     A_sqrd = A[0]**2 + A[1]**2
     B = Coeffs[1]
@@ -19,7 +19,7 @@ def scatter_TR(ax,filenumber):
     T = F_sqrd*w1/(A_sqrd*w0)
     R = B_sqrd/A_sqrd
 
-    #212Po
+    #212Po    Z = 84
     E = 8.74
     v = 0.69*E**0.*1e7    #m/s
     A = 212
@@ -30,7 +30,7 @@ def scatter_TR(ax,filenumber):
     
     print("N = ", filenumber, ": ", "T = ",   T_half)
     
-    ax.scatter(filenumber,T_half,edgecolor='k',facecolor='none',s=60)
+    ax.scatter(filenumber,T_half,edgecolor=Color,facecolor='none',s=100,marker=Marker)
     
     #ax.scatter(filenumber,R,marker='v',c='green',s=60)
     #ax.scatter(filenumber,T+R,edgecolor='k',facecolor='none',s=60)
@@ -52,21 +52,34 @@ def main():
         If all right: T+R = 1.
     '''
 
-    filenames = listdir('O')
+    Dirs = ['R0=1.5','R0=1.26','R0=1.1']
+    Markers = ['o','v','*']
+    Colors  = ['b','r','purple']
+    filenames = listdir(Dirs[0]+'/O')
     filenames.sort()
+    
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    for i in filenames:
-        scatter_TR(ax,FILES.string2number(i))
-    ax.plot([0,100],[0.25e-6,0.25e-6],lw=2,ls='--',c='k')
-    ax.text(70,0.585e-6,s='$T_{1/2}=0.25$ $\mu$s')
+    for j in range(len(Dirs)):
+        for i in filenames:
+            scatter_TR(ax,Dirs[j],FILES.string2number(i),Markers[j],Colors[j])
+    ax.plot([0,100],[0.3e-6,0.3e-6],lw=1,ls='--',c='k',label='$T_{1/2}=3\cdot 10^{-7}$ s')
+    #ax.text(70,0.585e-6,s='$T_{1/2}=0.25$ $\mu$s')
     ax.set_xlabel('Number of barriers, $N$')
     ax.set_ylabel('$^{212}$Po  $T_{1/2}$ [s]')
 
     ax.set_xticks([1,10,20,30,40,50,60,70,80,90,100])
     ax.set_yscale('log')
     ax.grid(axis='y',ls='--')    
+
+    ax.scatter([1e20],[1e20],marker=Markers[0],edgecolor=Colors[0],facecolor='none',label='$R_0=1.50$ fm')
+    ax.scatter([1e20],[1e20],marker=Markers[1],edgecolor=Colors[1],facecolor='none',label='$R_0=1.26$ fm')
+    ax.scatter([1e20],[1e20],marker=Markers[2],edgecolor=Colors[2],facecolor='none',label='$R_0=1.10$ fm')
+    ax.legend(framealpha=0)
+    
+    ax.set_xlim(0,101)
+    ax.set_ylim(1e-10,1e5)
     plt.show()
 
 main()
