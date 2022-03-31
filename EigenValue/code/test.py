@@ -1,6 +1,16 @@
 from PLOTTING import *
-from numpy import array,zeros,dot,matmul
+from numpy import array,zeros,dot,matmul,copy,eye
 from numpy.linalg import solve,norm
+
+def RQI(A,x0,iters):
+
+    I = eye(len(A))
+    for i in range(iters):
+        y  = x0/norm(x0)
+        lam = dot(y,matmul(A,y))
+        x0 = solve(A-lam*I,y)
+
+    return x0/norm(x0)
 
 def inverse_power_iteration(A,x0,iters):
 
@@ -120,14 +130,15 @@ def plot(params,y):
     x = array([j*h for j in range(N)])
     fig = plt.figure()
     ax  = fig.add_subplot(111)
+    y0 = max(y)
     if params['parity'] == 'odd':
-        y = array([0] + [j for j in y] + [0])
-        ax.plot(x,y)
-        ax.plot(-x,-y)
+        y = array([0] + [j/y0 for j in y] + [0])
+        ax.plot(x,y,c='k')
+        ax.plot(-x,-y,c='k')
     else:
-        y = array([j for j in y] + [0])
-        ax.plot(x,y)
-        ax.plot(-x,y)
+        y = array([j/y0 for j in y] + [0])
+        ax.plot(x,y,c='k')
+        ax.plot(-x,y,c='k')
 
     
     plt.show()
@@ -135,17 +146,38 @@ def plot(params,y):
 def Energy(A,x0,params):
 
     eig = dot(x0,matmul(A,x0))/dot(x0,x0)
-    h = params['h']
     return eig/2
+
+def shift(A,c):
+    B = copy(A)
+    for i in range(len(A)):
+        B[i,i] -= c
+    return B
+    
 
 def main():
 
-    params = {'N': 400, 'h': 0.01, 'parity': 'even'}
+    ''' The eigenvalues: 
+        
+        E =   hf/2  (even)  --> shift = 1
+        E =  3hf/2  (odd)   --> shift = 3
+        E =  5hf/2  (even)  --> shift = 5
+        E =  7hf/2  (odd)   --> shift = 7
+        W =  9hf/2  (even)  --> shift = 9
+        E = 11hf/2  (odd)   --> shift = 11 etc. 
 
-    A = EvenMatrix(params)
-    B = OddMatrix(params)
+    '''
+
+    params = {'N': 300, 'h': 0.05, 'parity': 'odd'}
+
+    if params['parity'] == 'even':
+        A = EvenMatrix(params)
+    else:
+        A = OddMatrix(params)
+
     x0 = initial_guess(params)
-    x0 = inverse_power_iteration(A,x0,5)
+    shiftA = shift(A,3)
+    x0 = inverse_power_iteration(shiftA,x0,20)
 
     print(Energy(A,x0,params))
     
