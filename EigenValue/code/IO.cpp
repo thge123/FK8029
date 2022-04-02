@@ -41,19 +41,19 @@ void update_filename(char *filename, int filenumber){
 struct Files get_files(int filenumber){
     
     struct Files files;
-    files.filenameO = get_filename('O',filenumber);
-    files.filenameR = get_filename('R',filenumber);
-    files.filenameV = get_filename('V',filenumber);
-    files.filenameX = get_filename('X',filenumber);
+    files.filenameA = get_filename('A',filenumber);
+    files.filenameB = get_filename('B',filenumber);
+    files.filenameC = get_filename('C',filenumber);
+    files.filenameD = get_filename('D',filenumber);
     return files;
 }
 
 void update_filenames(struct Files files, int filenumber){
 
-    update_filename(files.filenameO, filenumber);
-    update_filename(files.filenameR, filenumber);
-    update_filename(files.filenameV, filenumber);
-    update_filename(files.filenameX, filenumber);
+    update_filename(files.filenameA, filenumber);
+    update_filename(files.filenameB, filenumber);
+    update_filename(files.filenameC, filenumber);
+    update_filename(files.filenameD, filenumber);
 }
 
 void write_vector(VectorXcd &X, ofstream &OutStream){

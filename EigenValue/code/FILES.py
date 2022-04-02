@@ -1,8 +1,9 @@
-def get_data(filename,Complex=False):
+def get_data(filename,fileline=1,Complex=False):
     alst = []
     if Complex:
         with open(filename) as File:
-            data = File.readline()
+            for i in range(fileline):
+            	data = File.readline()
             for i in data.split(';'):
                 z  = i[1:-1]
                 z  = z.split(',')
@@ -12,7 +13,8 @@ def get_data(filename,Complex=False):
                     pass
     else:
         with open(filename) as File:
-            data = File.readline()
+            for i in range(fileline):
+            	data = File.readline()
             for i in data.split(';'):
                 try:
                     alst.append(float(i))

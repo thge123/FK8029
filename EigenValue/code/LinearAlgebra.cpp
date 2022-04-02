@@ -24,26 +24,62 @@ Matrix<double,Dynamic,Dynamic> zeros(int M, int N){
     return V;
 }
 
-void PowerIter(MatrixXd &A, VectorXd &x0){
+VectorXd invPowerIter(SparseMatrix<double> &B, 
+                      double shift,
+                      double *lam,
+                      double *err){
 
     // Power iteration with matrix A using initial guess x0
 
-    int N = x0.rows();
-    double norm;
-    for (int i=0; i<1000; i++){
-        
-        x0 = A*x0;
-        x0.normalize();
+    int N = B.rows();
+    VectorXd x0;
+    x0 = VectorXd::Random(N);
+
+    MatrixXd I(N,N);
+    I = MatrixXd::Identity(N,N);
+    SparseMatrix<double> A = B-shift*I;
+
+    SparseLU<SparseMatrix<double>, COLAMDOrdering<int>> solver;
+    solver.analyzePattern(A);
+    solver.factorize(A);
+
+    VectorXd y(N),Delta(N);
+    double MAX;
+    int k = 1;
+    while (1) {
+
+        y = x0.normalized();
+        x0 = solver.solve(y);
+        if (k%10 == 0){
+            *lam = x0.dot(B*x0)/x0.dot(x0);
+            Delta = (B*x0-(*lam)*x0);
+            MAX = 0;
+            for (int i=0; i<N; i++){
+                if (abs(Delta(i)) > MAX)
+                    MAX = abs(Delta(i));
+            }
+        if (MAX < 1e-6){
+            *err = MAX;
+            break;
+        }
+        if (k>1000){
+            cout << "Eigenvector may not have been found for shift = " << shift << endl;
+            *err = MAX;
+            break;
+            }
+        }
+        k++;
     }
+    return x0;
 }
         
         
 
-Matrix<complex<double>,Dynamic,1> solve(MatrixXcd &A, VectorXcd &b){
-
-    // Solve using partial LU
-    Matrix<complex<double>,Dynamic,1> x;
-    x.resize(b.rows(),1);
-    x = A.partialPivLu().solve(b);
-    return x;
-}
+//Matrix<complex<double>,Dynamic,1> solve(MatrixXcd &A, VectorXcd &b){
+//
+//    // Solve using partial LU
+//    Matrix<complex<double>,Dynamic,1> x;
+//    x.resize(b.rows(),1);
+//    x = A.partialPivLu().solve(b);
+//    return x;
+//}

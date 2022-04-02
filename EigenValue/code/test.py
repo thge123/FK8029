@@ -1,6 +1,14 @@
 from PLOTTING import *
-from numpy import array,zeros,dot,matmul,copy,eye
+from numpy import array,zeros,dot,matmul,copy,eye,exp
 from numpy.linalg import solve,norm
+from numpy import abs as Abs
+from numpy import max as Max
+from numpy.random import rand
+
+psi = {'0': lambda t: exp(-t**2/2),
+       '1': lambda t: t*exp(-t**2/2),
+       '2': lambda t: (2*t**2-1)*exp(-t**2/2)
+      }
 
 def RQI(A,x0,iters):
 
@@ -12,11 +20,31 @@ def RQI(A,x0,iters):
 
     return x0/norm(x0)
 
-def inverse_power_iteration(A,x0,iters):
+#def inverse_power_iteration(A,x0,iters):
+#
+#    for i in range(iters):
+#        y  = x0/norm(x0)
+#        x0 = solve(A,y)
+#
+#    return x0/norm(x0)
 
-    for i in range(iters):
+def inverse_power_iteration(B,x0,s):
+
+    k = 1
+    A = B-s*eye(len(B))
+    while True:
         y  = x0/norm(x0)
         x0 = solve(A,y)
+        if k%10 == 0:
+            lam = dot(x0,matmul(B,x0))/dot(x0,x0)
+            print(lam)
+            Delta = Abs(matmul(B,x0)-lam*x0)
+            if Max(Delta) < 1e-6:
+                break
+            elif k>1000:
+                print('No eigenvector found')
+                break
+        k+=1
 
     return x0/norm(x0)
 
@@ -35,9 +63,14 @@ def OddMatrix(params):
     A[0,3] = -6
     A[0,4] = 1
 
+    A[1,0]   = 16
+    A[1,1]   = -30
+    A[1,2] = 16
+    A[1,3] = -1
+
     # Central fourth order approx.
     # of second derivative.
-    for i in range(1,N-4):
+    for i in range(2,N-4):
         A[i,i-2] = -1
         A[i,i-1] = 16
         A[i,i]   = -30
@@ -62,7 +95,8 @@ def OddMatrix(params):
 
     # Potential
     for i in range(N-2):
-        A[i,i] += ((i+1)*h)**2
+        x = (i+1)*h
+        A[i,i] += test_pot(x)
     
     return A
 
@@ -107,22 +141,38 @@ def EvenMatrix(params):
 
     # Potential
     for i in range(N-1):
-        A[i,i] += ((i)*h)**2
+        x = ((i)*h)
+        A[i,i] += test_pot(x)
 
     return A
+
+def har_osc(x):
+    return x**2
+
+def test_pot(x):
+    return x**2
 
 def initial_guess(params):
 
     N  = params['N']
     if params['parity'] == 'odd':
-        x0 = zeros(N-2)
+        x0 = rand(N-2)
     else:
-        x0 = zeros(N-1)
+        x0 = rand(N-1)
     x0[0] = 1
 
     return x0
 
-def plot(params,y):
+def normalized_density(X,y):
+
+    I = 0
+    y_out = y**2
+    for i in range(len(X)-1):
+        y_avg = (y_out[i+1]+y_out[i])/2
+        I += y_avg*(X[i+1]-X[i])
+    return y_out/(2*I)
+        
+def plot(params,y,density=False):
     
     h = params['h']
     N = params['N']
@@ -130,30 +180,42 @@ def plot(params,y):
     x = array([j*h for j in range(N)])
     fig = plt.figure()
     ax  = fig.add_subplot(111)
-    y0 = max(y)
     if params['parity'] == 'odd':
-        y = array([0] + [j/y0 for j in y] + [0])
-        ax.plot(x,y,c='k')
-        ax.plot(-x,-y,c='k')
+        y = array([0] + [j for j in y] + [0])
+        if density:
+            y = normalized_density(x,y)
+            ax.plot(x,y,c='k')
+            ax.plot(-x,y,c='k')
+        else:
+            ax.plot(x,y,c='k')
+            ax.plot(-x,-y,c='k')
     else:
-        y = array([j/y0 for j in y] + [0])
-        ax.plot(x,y,c='k')
-        ax.plot(-x,y,c='k')
+        y = array([j for j in y] + [0])
+        if density:
+            y = normalized_density(x,y)
+            ax.plot(x,y,c='k')
+            ax.plot(-x,y,c='k')
+        else:
+            ax.plot(x,y,c='k')
+            ax.plot(-x,y,c='k')
+    pot = [test_pot(j) for j in x]
+    pot = [j/max(pot) for j in pot]
+    ax.plot(x,pot,ls='--',c='k')
+    ax.plot(-x,pot,ls='--',c='k')
 
-    
     plt.show()
 
-def Energy(A,x0,params):
+def Energy(A,x0):
 
     eig = dot(x0,matmul(A,x0))/dot(x0,x0)
-    return eig/2
+    #print(matmul(A,x0)-eig*x0)
+    return eig
 
 def shift(A,c):
     B = copy(A)
     for i in range(len(A)):
         B[i,i] -= c
     return B
-    
 
 def main():
 
@@ -168,19 +230,37 @@ def main():
 
     '''
 
-    params = {'N': 300, 'h': 0.05, 'parity': 'odd'}
+    params = {'N': 500, 'h': 0.05, 'parity': 'odd'}
 
-    if params['parity'] == 'even':
-        A = EvenMatrix(params)
-    else:
-        A = OddMatrix(params)
+    A = EvenMatrix(params)
+    B = OddMatrix(params)
 
-    x0 = initial_guess(params)
-    shiftA = shift(A,3)
-    x0 = inverse_power_iteration(shiftA,x0,20)
-
-    print(Energy(A,x0,params))
     
-    plot(params,x0)
+    x0 = initial_guess(params)
+    x0 = inverse_power_iteration(B,x0,1)
+    print('i=',3,'  ', 'E=',Energy(B,x0))
+
+    #if params['parity'] == 'even':
+    #    A = EvenMatrix(params)
+    #else:
+    #    A = OddMatrix(params)
+
+#    for i in range(0,30):
+#        if i%2 == 0:
+#            params['parity'] = 'even'
+#            x0 = initial_guess(params)
+#            x0 = inverse_power_iteration(A,x0,i+rand())
+#            print('i=',i,'  ', 'E=',Energy(A,x0))
+#        else:
+#            params['parity'] = 'odd'
+#            x0 = initial_guess(params)
+#            x0 = inverse_power_iteration(B,x0,i+rand())
+#            print('i=',i,'  ', 'E=',Energy(B,x0))
+
+#    x0 = initial_guess(params)
+#    shiftA = shift(A,3)
+#    x0 = inverse_power_iteration(A,x0,3.2)
+#    print(Energy(A,x0))
+    plot(params,x0,density=False)
 
 main()

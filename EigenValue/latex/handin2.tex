@@ -1,24 +1,80 @@
 \documentclass[twocolumn]{article}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath,amssymb,physics,blindtext,graphicx}
+\usepackage{amsmath,amssymb,physics,mathtools,blindtext,graphicx}
 \usepackage[a4paper,total={7.5in,10in}]{geometry}
 
 \begin{document}
 \begin{large}
 \section*{Some title}
+\subsection*{Introduction}
+In quantum mechanics, one is often interested in solving the stationary Schrödinger equation in one dimension:
+\begin{equation}
+    -\frac{\hbar^2}{2m}u''(x) + V(x)u(x) = Eu.
+\end{equation}
+This equation can be viewed as an eigenvalue problem $\mathcal{H}u = Eu$ where $\mathcal{H}$ is the hamiltonian given above. The solution $u$ can then be approximated by finding the eigenvalues of the discretized Hamiltonian $H$. Here we will consider a hamiltonian with a symmetric potential, $V(-x) = V(x)$ and a description of how such an eigenvalue problem can be solved using the inverse power method will be given.
+
+\subsection*{Discretizing the hamiltonian}
+From here on, the Schrödinger equation will be written in the dimensionless form
+\begin{equation}
+    -u''(\xi) + V(\xi)u(\xi) = Eu(\xi)
+\end{equation}
+and we will only consider square integrable solutions $u$ on the real line and assume that $u(|\xi|\to\infty) = 0$. In order to discretize the hamiltonian, we introduce the gridpoints $\xi_j$ and the approximation of the function $u$ at these gridpoints, $u_j\approx u(\xi_j)$. Furthermore, we assume that $\xi_j\in[-L,L]$, where $L$ is chosen such that $u(\xi)\approx 0$ for $|\xi|\geq L$. The second derivative in the hamiltonian can be discretized using finite differences. Here, the following difference formula is chosen:
+\begin{equation}
+    \begin{split}
+        u''(x_j) &= \frac{1}{12h^2}\big(-u(\xi_{j-2})+16u(\xi_{j-1})-30u(\xi_j) \\ 
+        &\hspace{1.7cm}+16u(\xi_{j+1})-u(\xi_{j+2})\big) + O(h^4)
+    \end{split}
+\end{equation}
+where $h$ is the step size $h = \xi_{j+1} - \xi_j$ which is assumed to be constant. The second term in the Hamiltonian is discretized in a straightforward manner: $V(\xi_j)u_j$. Using this, and the fact that $u_j=0$ for large enough $|j|$, the eigenvalue equation $H\mathbf{u} = E\mathbf{u}$ can be set up, where $u_j$ are the elements of $\mathbf{u}$. 
+%\begin{equation}
+%    H = \frac{1}{12h^2}\left(
+%        \begin{matrix}
+%            30+12h^2V(\xi_j)  & -16 & 1 & 0 & \dots \\ 
+%            -16 & 30 & -16 & 1 & \dots \\ 
+%            30 & -16 & 1 & 0 & \dots \\ 
+%        \end{matrix}\right)
+%\end{equation}
+
+However, since the potential is assumed to be even, the solutions of the eigenvalue problem are either even or odd and we could disregard the negative axis by imposing the following boundary conditions:
+\begin{equation}
+    \begin{rcases}
+        &u'(0) = 0 \quad \text{for even } u, \\ 
+        &u(0) = 0  \quad \text{for odd } u.
+    \end{rcases}
+\end{equation} 
+%\begin{equation}
+%    \begin{split}
+%        &u'(0) = 0 \quad\text{and}\quad u(L) = 0 \quad \text{for even } u, \\ 
+%        &u(0) = 0 \quad\text{and}\quad u(L) = 0 \quad \text{for odd } u.
+%    \end{split}
+%\end{equation} 
+This will result in two different discretizations of the hamiltonian, $H_\text{even}$ and $H_\text{odd}$, corresponding to these two different boundary conditions. With the fourth order approximation used, the difference is only in the first two rows (more details on how these two matrices were constructed are given in an appendix). The eigenstates, ordered with increasing energy $E_0<E_1<E_2<\dots$, can then be approximated by solving the eigenvalue problems:
+\begin{equation}
+    \begin{split}
+        &H_\text{even}\mathbf{u}_0 = E_0\mathbf{u}_0 \\ 
+        &H_\text{odd } \mathbf{u}_1 = E_1\mathbf{u}_1 \\ 
+        &H_\text{even}\mathbf{u}_2 = E_2\mathbf{u}_2 \\ 
+        &H_\text{odd }\mathbf{u}_3 = E_3\mathbf{u}_3 \\ 
+        &\hspace{1.5cm} \vdots
+    \end{split}
+\end{equation}
+
+
+\subsection*{The harmonic oscillator}
 The time independent Schrödinger equation for the harmonic oscillator is 
 \begin{equation}
     -\frac{\hbar}{2m}\frac{\text{d}^2u}{\text{d}x^2} + \frac{m\omega^2}{2}x^2 = Eu
 \end{equation}
-By changing the variables with $\xi = x/\sqrt{\hbar/m\omega}$ and $E' = \hbar\omega$, it can be written as 
+By changing the variables with $\xi = x/\sqrt{\hbar/m\omega}$ and $E' = 2E/\hbar\omega$, it can be written as 
 \begin{equation}
     \label{29mar1748}
-    -\frac{\text{d}^2u}{\text{d}\xi^2} + \xi^2u = 2E'u
+    -\frac{\text{d}^2u}{\text{d}\xi^2} + \xi^2u = E'u
 \end{equation}
+In the reduced units, the eigenvalues of the quantum harmonic oscillator are known to be $E'=1,3,5,7,\dots$. 
 
 \subsection*{Numerical solution to eigenvalue problem}
-We wish to solve \eqref{29mar1748} numerically by discretizing the real line and the second derivative of $u$. In order to do so, we introduce the gridpoints $\xi_j$ and the approximation of the function $u$ at these gridpoints, $u_j\approx u(\xi_j)$. Furthermore, we assume that $\xi_j\in[-L,L]$, where $L$ is chosen such that $u(\xi)\approx 0$ for $|\xi|>L$. Since the eigenfunctions of an even potential can be taken to be even or odd, we can focus on the interval $[0,L]$ and apply the boundary conditions 
+We wish to solve \eqref{29mar1748} numerically by discretizing the real line and the second derivative of $u$. In order to do so, we introduce the gridpoints $\xi_j$ and the approximation of the function $u$ at these gridpoints, $u_j\approx u(\xi_j)$. Furthermore, we assume that $\xi_j\in[-L,L]$, where $L$ is chosen such that $u(\xi)\approx 0$ for $|\xi|\geq L$. Since the eigenfunctions of an even potential can be taken to be even or odd, we can focus on the interval $[0,L]$ and apply the boundary conditions 
 \begin{equation}
     \begin{split}
         &u'(0) = 0 \quad\text{and}\quad u(L) = 0 \quad \text{for even } u, \\ 
@@ -32,6 +88,18 @@ The second derivative is approximated up to fourth order:
         &\hspace{1.7cm}+16u_{j+1}-u_{j+2}\big) 
     \end{split}
 \end{equation}
+
+\newpage
+\newpage
+\subsection*{Appendix: Construction of finite difference matrices}
+For $H_\text{odd}$, one can use a skewed difference formula for the second derivative:
+\begin{equation}
+    \begin{split}
+    u''(h) &= \frac{1}{12h^2}\big(10u(0)-15u(h)-4u(2h) \\
+    &\hspace{1.2cm} +14u(3h)-6u(4h)+u(5h)\big) + O(h^4)
+    \end{split}
+\end{equation}
+where $u(0) = 0$. 
 Special care had to be taken at the boundaries. For the even case, two ghost points, $\xi_{-1}$ and $\xi_{-2}$, were introduced to the left of zero and two fourth order approximations of the first derivative used to  (... words ...) :
 
 \begin{equation}
@@ -40,8 +108,6 @@ Special care had to be taken at the boundaries. For the even case, two ghost poi
         &u'(0) \approx \frac{1}{12h}\left(-3u_{-1}-10u_0+18u_1-6u_2+u_3\right)
     \end{split}
 \end{equation}
-
-
 
 \end{large}
 \end{document}

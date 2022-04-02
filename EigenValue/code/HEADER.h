@@ -2,10 +2,12 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
-#include "Eigen/Dense"
+#include "Eigen/Sparse"
 #include <complex>
+#include <vector>
 using namespace std;
 using namespace Eigen;
+typedef Triplet<double> triplet;
 
 
 // *********************** LinearAlgebra.cpp *******************
@@ -14,7 +16,7 @@ Matrix<double,Dynamic,Dynamic> zeros(int M, int N);
 Matrix<double,Dynamic,1>       zeros(int M);
 Matrix<complex<double>,Dynamic,1>       solve(MatrixXcd &A, VectorXcd &b);
 
-void PowerIter(MatrixXd&,VectorXd&);
+VectorXd invPowerIter(SparseMatrix<double>&,double shift,double *lam,double *err);
 
 
 
@@ -22,10 +24,10 @@ void PowerIter(MatrixXd&,VectorXd&);
 
 struct Files{
 
-    char *filename1; 
-    char *filename2; 
-    char *filename3;
-    char *filename4; 
+    char *filenameA; 
+    char *filenameB; 
+    char *filenameC;
+    char *filenameD; 
 };
 
 void get_filenames(struct Files *);
@@ -43,14 +45,14 @@ struct Params{
 
     double h;      // step size
     int    N;      // 
-    double L;      // End of interval
+    double E;
+    double err;
 
 };
 
 struct Params get_parameters();
-MatrixXd EvenMatrix(struct Params *);
-
-
+SparseMatrix<double> EvenMatrix(struct Params *);
+SparseMatrix<double> OddMatrix(struct Params *);
 
 
 
