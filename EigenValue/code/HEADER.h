@@ -47,6 +47,7 @@ struct Params{
     int    N;      // 
     double E;
     double err;
+    double alpha=10;
 
 };
 

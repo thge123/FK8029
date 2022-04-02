@@ -28,30 +28,37 @@ int main() {
     E(1) = params.N;            // Number of steps
     E(2) = params.h;            // Step size
     
-    double shift = 0;
-    for (int i=0; i<20; i++){
+    double shift, shift_factor,old_E;
+    cout << "Write estimate for ground state energy: ";
+    cin  >> shift;
+    cout << "Write approximately how much to shift in each step: ";
+    cin  >> shift_factor;
     
+    for (int i=0; i<50; i++){
+    
+        old_E = params.E;
         cout << "Shift: " << shift << endl;
         if (i%2==0){
             x0 = invPowerIter(A,shift,&(params.E),&(params.err));
             cout << "Eigenvalue found: " << params.E 
-                 << "  with error: " << params.err << endl;
+                 << "  with error: " << params.err 
+                 << "  using EVEN operator" << endl;
             //shift = params.E+0.1;
-            shift = params.E + rand()%1000/1000.0;
         }
         if (i%2==1){
             x0 = invPowerIter(B,shift,&(params.E),&(params.err));   
             cout << "Eigenvalue found: " << params.E 
-                 << "  with error: " << params.err << endl;
+                 << "  with error: " << params.err 
+                 << "  using ODD operator" << endl;
             //shift = params.E+0.1;
-            shift = params.E + rand()%1000/1000.0;
         }
+
+        shift = params.E + shift_factor;
         E(0) = params.E;    // Energy
         E(3) = params.err;  // Error in eigenvalue eq.
         write_vector(x0, OutStreamA);
         write_vector(E , OutStreamB);
+        }
             
-    }
-
-
 }
+

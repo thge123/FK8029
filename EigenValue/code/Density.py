@@ -1,51 +1,97 @@
 from PLOTTING import *
 import FILES
-from numpy import array
+from numpy import array,exp,log
+from numpy import abs as ABS
 
-def plot(params,y,density=False):
+psi = {1: lambda t: exp(-t**2/2),
+       2: lambda t: t*exp(-t**2/2),
+       3: lambda t: (2*t**2-1)*exp(-t**2/2),
+       4: lambda t: (2*t**3-3*t)*exp(-t**2/2)
+      }
+
+def plot(ax,params,y,density=False,shift=0,pot_shift=0,Color='k'):
     
     h = params['h']
     N = params['N']
 
     x = array([j*h for j in range(int(N+1))])
-    fig = plt.figure()
-    ax  = fig.add_subplot(111)
+    y0 = max(ABS(y))
     if params['parity'] == 'odd':
-        y = array([0] + [j for j in y] + [0])
+        y = array([0] + [j/y0 for j in y] + [0])
         if density:
             y = normalized_density(x,y)
-            ax.plot(x,y,c='k')
-            ax.plot(-x,y,c='k')
+            ax.plot(x,y+shift,c=Color)
+            ax.plot(-x,y+shift,c=Color)
         else:
-            ax.plot(x,y,c='k')
-            ax.plot(-x,-y,c='k')
+            ax.plot(x,y+shift,c=Color)
+            ax.plot(-x,-y+shift,c=Color)
     else:
-        y = array([j for j in y] + [0,0])
+        y = array([j/y0 for j in y] + [0,0])
         if density:
             y = normalized_density(x,y)
-            ax.plot(x,y,c='k')
-            ax.plot(-x,y,c='k')
+            ax.plot(x,y+shift,c=Color)
+            ax.plot(-x,y+shift,c=Color)
         else:
-            ax.plot(x,y,c='k')
-            ax.plot(-x,y,c='k')
-    #pot = [test_pot(j) for j in x]
-    #pot = [j/max(pot) for j in pot]
-    #ax.plot(x,pot,ls='--',c='k')
-    #ax.plot(-x,pot,ls='--',c='k')
+            ax.plot(x,y+shift,c=Color)
+            ax.plot(-x,y+shift,c=Color)
+    E = params['E']
+    print('E = ', E)
+    print('err = ', params['err'])
+    Pot = [pot(j) for j in x]
+    Pot = [pot_shift*j/max(Pot) for j in Pot]
+    ax.plot(x,Pot,ls='--',c=Color)
+    ax.plot(-x,Pot,ls='--',c=Color)
+
+    ax.plot([x[0],x[-1]],[shift,shift],ls='--',c=Color)
+    ax.plot([-x[-1],x[0]],[shift,shift],ls='--',c=Color)
+    
+
+def pot(x):
+    alpha = 10
+    return x**2+alpha*exp(-x**2)-(1+log(alpha))
+
+
+def normalized_density(X,y):
+
+    I = 0
+    y_out = y**2
+    for i in range(len(X)-1):
+        y_avg = (y_out[i+1]+y_out[i])/2
+        I += y_avg*(X[i+1]-X[i])
+    return y_out/(2*I)
 
 
 def main():
-    state = 2 
-    X = FILES.get_data('A/A000.dat',fileline=state)
-    E = FILES.get_data('B/B000.dat', fileline=state)
-    params = {'E': E[0], 'N': E[1], 'h': E[2], 'err': E[3],}
 
-    if state%2 == 1:
-        params['parity'] = 'even'
-    else:
-        params['parity'] = 'odd'
-    
-    plot(params,X)
+    fig = plt.figure()
+    ax  = fig.add_subplot(111)
+    M = 23
+    j = 12
+    A = 'A/A'+FILES.number2string(j)+'.dat'
+    B = 'B/B'+FILES.number2string(j)+'.dat'
+    for i in range(1,M):
+        state = i    # state 1 = ground state
+
+        X = FILES.get_data(A,fileline=state)
+        E = FILES.get_data(B, fileline=state)
+        params = {'E': E[0], 'N': E[1], 'h': E[2], 'err': E[3]}
+
+        if state%2 == 1:
+            params['parity'] = 'even'
+        else:
+            params['parity'] = 'odd'
+        
+        plot(ax,params,X,density=True,shift=params['E'],pot_shift=2*M)
+    ax.set_xlabel(r'$x\sqrt{m\omega/\hbar}$',fontsize=32)
+    ax.set_ylabel(r"$2E/\hbar\omega$",fontsize=32)
+    ax.plot([1e6,1e6],[1e6,1e6],c='k',label=r'Probability densities for $\alpha=10$.')
+    ax.set_xlim(-5.2,5.2)
+    ax.set_xticks([-4,-2,0,2,4])
+    ax.set_ylim(-0,13)
+    ax.set_yticks([0,2,4,6,8,10])
+    ax.legend(loc='upper center',framealpha=0)
+
+
     plt.show()
     
 

@@ -19,6 +19,9 @@ struct Params get_parameters(){
         cout << "h not valid. Aborting .. " << endl;
         exit(1);
     }
+    
+    cout << "Write alpha factor: ";
+    cin  >> params.alpha;
 
     return params;
 
@@ -27,8 +30,9 @@ struct Params get_parameters(){
 SparseMatrix<double> EvenMatrix(struct Params *params){
 
 
-    double h = params -> h;
-    int    N = params -> N;
+    double h     = params -> h;
+    int    N     = params -> N;
+    double alpha = params -> alpha;
 
     vector<triplet> tripletList;
 
@@ -61,7 +65,7 @@ SparseMatrix<double> EvenMatrix(struct Params *params){
     tripletList.push_back(triplet(N-2,N-6,   1.0));
     tripletList.push_back(triplet(N-2,N-5,  -6.0));
     tripletList.push_back(triplet(N-2,N-4,   14.0));
-    tripletList.push_back(triplet(N-2,N-3,  -4));
+    tripletList.push_back(triplet(N-2,N-3,  -4.0));
     tripletList.push_back(triplet(N-2,N-2,  -15.0));
 
     // Potential
@@ -69,7 +73,13 @@ SparseMatrix<double> EvenMatrix(struct Params *params){
     for (int i=0; i<N-1; i++){
 
         x = i*h;
-        tripletList.push_back(triplet(i,i,  - x*x*(12*h*h)));
+        if (alpha>0.5)
+            tripletList.push_back(triplet(i,i,  - (x*x+alpha*exp(-x*x) - (1+log(alpha)))*(12*h*h)));    // modif. har. osc.
+        else
+            //tripletList.push_back(triplet(i,i,  + alpha*(12*h*h)));    // sq. well
+            tripletList.push_back(triplet(i,i,  - x*x*(12*h*h)));    // har osc. 
+            //tripletList.push_back(triplet(i,i,  - x*(12*h*h)));    // |x| pot
+            //tripletList.push_back(triplet(i,i,  - pow(x,8.0)*(12*h*h)));    // x^(2n) potential
 
     }
 
@@ -88,6 +98,7 @@ SparseMatrix<double> OddMatrix(struct Params *params){
 
     double h = params -> h;
     int    N = params -> N;
+    double alpha = params -> alpha;
 
     vector<triplet> tripletList;
 
@@ -128,7 +139,14 @@ SparseMatrix<double> OddMatrix(struct Params *params){
     for (int i=0; i<N-1; i++){
 
         x = (i+1)*h;
-        tripletList.push_back(triplet(i,i,  - x*x*(12*h*h)));
+        // tripletList.push_back(triplet(i,i,  - (x*x+alpha*(exp(-x*x)-1))*(12*h*h)));    // harmonic_osc
+        if (alpha>0.5)
+            tripletList.push_back(triplet(i,i,  - (x*x+alpha*exp(-x*x) - (1+log(alpha)))*(12*h*h)));    // modif. har. osc.
+        else
+            //tripletList.push_back(triplet(i,i,  + alpha*(12*h*h)));    // sq. well
+            //tripletList.push_back(triplet(i,i,  - x*(12*h*h)));    // |x| pot
+            tripletList.push_back(triplet(i,i,  - x*x*(12*h*h)));    // har osc. 
+            //tripletList.push_back(triplet(i,i,  - pow(x,8.0)*(12*h*h)));    // har osc. 
 
     }
 
