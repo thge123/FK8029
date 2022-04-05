@@ -48,6 +48,7 @@ def plot(ax,params,y,density=False,shift=0,pot_shift=0,Color='k'):
 
 def pot(x):
     alpha = 10
+    return x**2
     return x**2+alpha*exp(-x**2)-(1+log(alpha))
 
 
@@ -65,8 +66,8 @@ def main():
 
     fig = plt.figure()
     ax  = fig.add_subplot(111)
-    M = 23
-    j = 12
+    M = 10
+    j = 2 
     A = 'A/A'+FILES.number2string(j)+'.dat'
     B = 'B/B'+FILES.number2string(j)+'.dat'
     for i in range(1,M):
@@ -84,11 +85,11 @@ def main():
         plot(ax,params,X,density=True,shift=params['E'],pot_shift=2*M)
     ax.set_xlabel(r'$x\sqrt{m\omega/\hbar}$',fontsize=32)
     ax.set_ylabel(r"$2E/\hbar\omega$",fontsize=32)
-    ax.plot([1e6,1e6],[1e6,1e6],c='k',label=r'Probability densities for $\alpha=10$.')
-    ax.set_xlim(-5.2,5.2)
-    ax.set_xticks([-4,-2,0,2,4])
+    ax.plot([1e6,1e6],[1e6,1e6],c='k',label=r'Probability densities for $\alpha=0$.')
+    ax.set_xlim(-8.2,8.2)
+    ax.set_xticks([-6,-4,-2,0,2,4,6])
     ax.set_ylim(-0,13)
-    ax.set_yticks([0,2,4,6,8,10])
+    ax.set_yticks([1,3,5,7,9,11])
     ax.legend(loc='upper center',framealpha=0)
 
 
@@ -96,17 +97,6 @@ def main():
     
 
 main()
-
-
-
-
-
-
-
-
-
-
-
 
 
 

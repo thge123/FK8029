@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.10.31)  3 APR 2022 00:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.10.31)  5 APR 2022 08:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -243,36 +243,57 @@ Package: iftex 2019/11/07 v1.0c TeX engine tests
 \Gm@layouthoffset=\dimen162
 \Gm@layoutvoffset=\dimen163
 \Gm@dimlist=\toks22
-) (./handin2.aux)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2020/01/03 v3.4h Customizing captions (AR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2020/01/03 v1.8h caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 61.
+\captionmargin=\dimen164
+\captionmargin@=\dimen165
+\captionwidth=\dimen166
+\caption@tempdima=\dimen167
+\caption@indent=\dimen168
+\caption@parindent=\dimen169
+\caption@hangindent=\dimen170
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count285
+\c@continuedfloat=\count286
+) (./handin2.aux
+
+LaTeX Warning: Label `4apr2029' multiply defined.
+
+)
 \openout1 = `handin2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 7.
-LaTeX Font Info:    ... okay on input line 7.
-
-(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
+LaTeX Font Info:    ... okay on input line 8.
+ (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count285
-\scratchdimen=\dimen164
+\scratchcounter=\count287
+\scratchdimen=\dimen171
 \scratchbox=\box48
-\nofMPsegments=\count286
-\nofMParguments=\count287
+\nofMPsegments=\count288
+\nofMParguments=\count289
 \everyMPshowfont=\toks23
-\MPscratchCnt=\count288
-\MPscratchDim=\dimen165
-\MPnumerator=\count289
-\makeMPintoPDFobject=\count290
+\MPscratchCnt=\count290
+\MPscratchDim=\dimen172
+\MPnumerator=\count291
+\makeMPintoPDFobject=\count292
 \everyMPtoPDFconversion=\toks24
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -317,12 +338,14 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 12.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 13.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 12.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 13.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -331,62 +354,88 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 <comparison.png, id=1, 939.51pt x 646.0938pt>
 File: comparison.png Graphic file (type png)
 <use comparison.png>
-Package pdftex.def Info: comparison.png  used on input line 82.
+Package pdftex.def Info: comparison.png  used on input line 84.
 (pdftex.def)             Requested size: 263.061pt x 180.90503pt.
-<har_osc_density.png, id=3, 693.792pt x 1070.3187pt>
-File: har_osc_density.png Graphic file (type png)
-<use har_osc_density.png>
-Package pdftex.def Info: har_osc_density.png  used on input line 92.
-(pdftex.def)             Requested size: 242.83083pt x 374.61716pt.
-<alpha5_density.png, id=4, 693.792pt x 519.6213pt>
-File: alpha5_density.png Graphic file (type png)
-<use alpha5_density.png>
-Package pdftex.def Info: alpha5_density.png  used on input line 96.
-(pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<alpha10_density.png, id=21, 693.792pt x 519.6213pt>
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./comparison.png>]
+<har_osc_density.png, id=22, 693.792pt x 872.2989pt>
+File: har_osc_density.png Graphic file (type png)
+<use har_osc_density.png>
+Package pdftex.def Info: har_osc_density.png  used on input line 94.
+(pdftex.def)             Requested size: 249.76492pt x 314.02736pt.
+<dist.png, id=23, 693.792pt x 519.6213pt>
+File: dist.png Graphic file (type png)
+<use dist.png>
+Package pdftex.def Info: dist.png  used on input line 101.
+(pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
+<alpha5_density.png, id=24, 693.792pt x 846.2817pt>
+File: alpha5_density.png Graphic file (type png)
+<use alpha5_density.png>
+Package pdftex.def Info: alpha5_density.png  used on input line 107.
+(pdftex.def)             Requested size: 256.69902pt x 313.11932pt.
+<alpha10_density.png, id=25, 693.792pt x 859.2903pt>
 File: alpha10_density.png Graphic file (type png)
 <use alpha10_density.png>
-Package pdftex.def Info: alpha10_density.png  used on input line 102.
-(pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
-<relationship.png, id=22, 693.792pt x 519.6213pt>
+Package pdftex.def Info: alpha10_density.png  used on input line 114.
+(pdftex.def)             Requested size: 256.69902pt x 317.93243pt.
+<first_eigenstates_alphas.png, id=26, 854.2314pt x 615.7404pt>
+File: first_eigenstates_alphas.png Graphic file (type png)
+<use first_eigenstates_alphas.png>
+Package pdftex.def Info: first_eigenstates_alphas.png  used on input line 120.
+(pdftex.def)             Requested size: 264.80899pt x 190.87755pt.
+<high_energy_comparison.png, id=27, 810.8694pt x 596.9502pt>
+File: high_energy_comparison.png Graphic file (type png)
+<use high_energy_comparison.png>
+Package pdftex.def Info: high_energy_comparison.png  used on input line 126.
+(pdftex.def)             Requested size: 267.58772pt x 196.99417pt.
+
+Overfull \hbox (1.57523pt too wide) in paragraph at lines 126--127
+ [][] 
+ []
+
+<relationship.png, id=28, 693.792pt x 519.6213pt>
 File: relationship.png Graphic file (type png)
 <use relationship.png>
-Package pdftex.def Info: relationship.png  used on input line 106.
+Package pdftex.def Info: relationship.png  used on input line 138.
 (pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1286) has occurred while \output is active []
 
- [2 <./comparison.png> <./har_osc_density.png> <./alpha5_density.png>] [3 <./al
-pha10_density.png> <./relationship.png>] [4
+ [2 <./har_osc_density.png> <./dist.png> <./alpha5_density.png>] [3 <./alpha10_
+density.png> <./first_eigenstates_alphas.png> <./high_energy_comparison.png> <.
+/relationship.png>] [4
 
-] (./handin2.aux) ) 
+] (./handin2.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 5154 strings out of 481239
- 75568 string characters out of 5920376
- 354005 words of memory out of 5000000
- 20355 multiletter control sequences out of 15000+600000
+ 6281 strings out of 481239
+ 96115 string characters out of 5920376
+ 372824 words of memory out of 5000000
+ 21473 multiletter control sequences out of 15000+600000
  541142 words of font info for 58 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,19n,38p,901b,289s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex
-10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/
-texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
-nts/symbols/msbm10.pfb>
-Output written on handin2.pdf (4 pages, 412981 bytes).
+ 43i,19n,42p,883b,391s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+
+Output written on handin2.pdf (4 pages, 731030 bytes).
 PDF statistics:
- 76 PDF objects out of 1000 (max. 8388607)
- 47 compressed objects within 1 object stream
+ 86 PDF objects out of 1000 (max. 8388607)
+ 50 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

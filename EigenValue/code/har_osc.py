@@ -25,6 +25,6 @@ for j in [9,11,12]:
     ax.scatter(x,y,c=Colors[j],marker=Markers[j],label=Labels[j])
     ax.plot(x,y,c=Colors[j])
 ax.legend(framealpha=0)
-ax.set_xlabel(r"$E'_j$")
-ax.set_ylabel(r"$E'_{j+1}-E'_j$")
+ax.set_xlabel(r"$E'_j$",fontsize=32)
+ax.set_ylabel(r"$E'_{j+1}-E'_j$",fontsize=32)
 plt.show()
