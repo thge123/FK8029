@@ -28,7 +28,7 @@ We will first consider a general potential $V$ and write the Schrödinger equati
     \label{2apr1953}
     -u''(\xi) + V(\xi)u(\xi) = E'u(\xi)
 \end{equation}
-where we assume square integrable solutions $u$ on the real line and that $u(|\xi|\to\infty) = 0$. In order to discretize the hamiltonian, we introduce the gridpoints $\xi_j$ and the approximations of the function $u$ at these gridpoints, $u_j\approx u(\xi_j)$. The step size $h=\xi_{j+1}-\xi_j$ is assumed to be constant. Furthermore, we assume that $\xi_j\in[-L,L]$, where $L$ is chosen such that $u(\xi)\approx 0$ for $|\xi|\geq L$. The second derivative in the hamiltonian is discretized using finite differences and the potential term is discretized in a straightforward manner: $V(\xi_j)u_j$. More details on this is given in an appendix. Using the discretizations, and the fact that $u_j=0$ for large enough $|j|$, the eigenvalue equation $H\mathbf{u} = E\mathbf{u}$ can be set up, where $u_j$ are the elements of $\mathbf{u}$. 
+where we assume square integrable solutions $u$ on the real line and that $u(|\xi|\to\infty) = 0$. In order to discretize the hamiltonian, we introduce the gridpoints $\xi_j$ and the approximations of the function $u$ at these gridpoints, $u_j\approx u(\xi_j)$. The step size $h=\xi_{j+1}-\xi_j$ is assumed to be constant. Furthermore, we assume that $\xi_j\in[-L,L]$, where $L$ is chosen such that $u(\xi)\approx 0$ for $|\xi|\geq L$. The second derivative in the hamiltonian is discretized using finite differences and the potential term is discretized in a straightforward manner: $V(\xi_j)u_j$. More details on the finite difference formulas are given in an appendix. Using the discretizations, and the fact that $u_j=0$ for large enough $|j|$, the eigenvalue equation $H\mathbf{u} = E\mathbf{u}$ can be set up, where $u_j$ are the elements of $\mathbf{u}$. 
 %\begin{equation}
 %    H = \frac{1}{12h^2}\left(
 %        \begin{matrix}
@@ -108,7 +108,9 @@ The probability density for the first couple of eigenstates for $\alpha=0$ (i.e.
     \caption{The first couple of probability densities for the modified harmonic oscillator with $\alpha=5$.}
     \label{4apr2003}
 \end{figure}
-The power iteration method was then tested for $\alpha=5$ and $\alpha=10$. The probability densities for the first couple of eigenstates can be seen in figures \ref{4apr2003} and \ref{4apr2029}. The first two eigenstates are plotted in figure \ref{5apr0727}. A major difference to the harmonic oscillator are the spacings between the first two eigenstates. For $\alpha=5$, the difference was $E'_2-E'_1 = 0.54$ and for $\alpha=10$, $E'_2-E'_1 = 0.08$. The spacings then seem to vary less for higher energy which is better shown in figure \ref{4apr2044}. This reflects the fact that for large $E$, the $\sim e^{-\xi^2}$ part of the Schrödinger equation has less effect and the eigenstates begin to look like harmonic oscillator states. Figure \ref{4apr2029} demonstrates this.
+The power iteration method was then tested for $\alpha=5$ and $\alpha=10$. The probability densities for the first couple of eigenstates can be seen in figures \ref{4apr2003} and \ref{4apr2029}. The first two eigenstates are plotted in figure \ref{5apr0727}. A major difference to the harmonic oscillator are the spacings between the first two eigenstates. For $\alpha=5$, the difference was $E'_2-E'_1 = 0.54$ and for $\alpha=10$, $E'_2-E'_1 = 0.08$. The spacings then seem to vary less for higher energy which is better shown in figure \ref{4apr2044}. This reflects the fact that for large $E$, the $\sim e^{-\xi^2}$ part of the Schrödinger equation has less effect and the eigenstates begin to look like harmonic oscillator states. Figure \ref{5apr0922} demonstrates this. 
+
+
 \begin{figure}
     \centering
     \includegraphics[scale=0.37]{alpha10_density.png}
@@ -123,9 +125,15 @@ The power iteration method was then tested for $\alpha=5$ and $\alpha=10$. The p
 \end{figure}
 \begin{figure}[t!]
     \centering
+    \includegraphics[scale=0.35]{relationship.png}
+    \caption{The spacings between the energies for different $\alpha$. For large energies, the energy levels and the spacings between the energy levels become more similar to the harmonic oscillator ($\alpha=0$).}
+    \label{4apr2044}
+\end{figure}
+\begin{figure}
+    \centering
     \includegraphics[scale=0.33]{high_energy_comparison.png}
     \caption{Comparison of eigenstates for different values of $\alpha$. For large energies, the eigenstates start to look like harmonic oscillator states ($\alpha=0$).}
-    \label{4apr2029}
+    \label{5apr0922}
 \end{figure}
 %\begin{figure}
 %    \centering
@@ -133,12 +141,6 @@ The power iteration method was then tested for $\alpha=5$ and $\alpha=10$. The p
 %    \caption{}
 %    \label{4apr2217}
 %\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.35]{relationship.png}
-    \caption{The spacings between the energies for different $\alpha$. For large energies, the energy levels and the spacings between the energy levels become more similar to the harmonic oscillator ($\alpha=0$).}
-    \label{4apr2044}
-\end{figure}
 %\begin{tabular}{c c c}
 %    \centering
 %    $E'$ & $|H\mathbf{u}-E'\mathbf{u}|_\text{max}$ & $h$ \\ 
@@ -171,9 +173,7 @@ The power iteration method was then tested for $\alpha=5$ and $\alpha=10$. The p
 %    \end{split}
 %\end{equation}
 
-\newpage
-\null
-\newpage
+In general, this method worked quite well for this potential when $\alpha$ was small. However, when $\alpha$ was large it became hard to discern the two lowest energy states (even for $\alpha=10$ special care had to be taken for the first initial guesses of energies).
 \subsection*{Appendix: Construction of finite difference matrices}
 For the second derivative in the hamiltonian, the following difference formula was used:
 \begin{equation}
