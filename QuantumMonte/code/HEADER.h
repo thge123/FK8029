@@ -45,17 +45,18 @@ struct Params{
     int    N;         // Number of coords.
     double Delta  = 0.1; 
     int    iters  = 100;
-    VectorXd AvgElocals;
-    VectorXd VarElocals;
-    VectorXd alphas;
+    Vector4d AvgElocals;
+    Vector4d VarElocals;
+    Vector4d alphas;
 
 };
 
 struct Params get_parameters();
 VectorXd init_function(struct Params*);
 void perturb(VectorXd *, struct Params *);
-void MonteCarlo(VectorXd *, struct Params*);
-void sample (VectorXd*, struct Params*, int);
+void MonteCarlo(VectorXd *, struct Params*,int);
+void sample (VectorXd*, struct Params*,int);
+void gss_MonteCarlo(VectorXd *X, struct Params *params);
 
 
 // ***************** END OF HEADER ************************

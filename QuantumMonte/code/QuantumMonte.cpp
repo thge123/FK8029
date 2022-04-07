@@ -14,18 +14,16 @@ struct Params get_parameters(){
     cin  >> params.iters;
 
 
-    /* M is maximum number of instances 
-     * of parameter constant. */
-    int M = 100; 
-    params.AvgElocals = zeros(M);
-    params.VarElocals = zeros(M);
-    params.alphas  = zeros(M);
 
+    double a;
     cout << "Write first alpha: ";
-    cin  >> (params.alphas)(0);
+    cin  >> a;
+    (params.alphas)(0) = a;
 
+    double b;
     cout << "Write second alpha: ";
-    cin  >> (params.alphas)(1);
+    cin  >> b;
+    (params.alphas)(3) = b;
 
     return params;
 }
@@ -76,20 +74,61 @@ void sample(struct Params *params, VectorXd *X, int j, int k){
     (params -> VarElocals)(k) += Elocal*Elocal;
     (params -> VarElocals)(k) /= j;
     (params -> VarElocals)(k) -= pow((params -> AvgElocals)(k),2.0);
-
-    cout << "Avg. local energy: " << (params -> AvgElocals)(0) << endl;
-    cout << "Var. local energy: " << (params -> VarElocals)(0) << endl;
-    cout << endl;
-    
 }
+
+void gss_MonteCarlo(VectorXd *X, struct Params *params){
+
+    /* a -> 0
+     * b -> 3
+     * c -> 1
+     * d -> 2 */
+
+    double phi = 1.618033988749;
+    double a = (params -> alphas)(0);
+    double b = (params -> alphas)(3);
+    double c = b-(b-a)/phi;
+    double d = a+(b-a)/phi;
+    (params -> alphas)(1) = c;
+    (params -> alphas)(2) = d;
+
+    MonteCarlo(X, params, 1);
+    MonteCarlo(X, params, 2);
+
+    double Ec = (params -> AvgElocals)(1);
+    double Ed = (params -> AvgElocals)(2);
     
-void MonteCarlo(VectorXd *X, struct Params *params){
+    int k = 0;
+    while (fabs(a-b)>1e-3 && k<100){
+
+        if (Ec<Ed){
+            b = d;
+            (params -> alphas)(3) = d;
+        } else {
+            a = c;
+            (params -> alphas)(0) = c;
+        }
+
+        c = b-(b-a)/phi;
+        d = a+(b-a)/phi;
+        (params -> alphas)(1) = c;
+        (params -> alphas)(2) = d;
+
+        MonteCarlo(X, params, 1);
+        MonteCarlo(X, params, 2);
+        
+        Ec = (params -> AvgElocals)(1);
+        Ed = (params -> AvgElocals)(2);
+        k++;
+    }
+}
+
+void MonteCarlo(VectorXd *X, struct Params *params,int k){
     
     int iters = (params -> iters);
     int N = (params -> N);
+    int totAcc=0;
     double p,random;
     
-    int totAcc=0;
     /* Copy X */
     VectorXd oldX(N);
     oldX = copy(X);
@@ -109,7 +148,7 @@ void MonteCarlo(VectorXd *X, struct Params *params){
             } else
                 *X = copy(&oldX);
         }
-        sample(params,X,i,0);
+        sample(params,X,i,k);
     }
     cout << "Acceptence ratio: " << (double) totAcc/iters << endl;
 }
