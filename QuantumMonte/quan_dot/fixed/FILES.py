@@ -13,13 +13,24 @@ def get_data(filename,fileline=1,Complex=False):
                     pass
     else:
         with open(filename) as File:
-            for i in range(fileline):
-            	data = File.readline()
-            for i in data.split(';'):
-                try:
-                    alst.append(float(i))
-                except:
-                    pass
+            if fileline == 0:
+                for i in File.readlines():
+                    data = []
+                    for j in i.split(';'):
+                        try:
+                            data.append(float(j))
+                        except:
+                            pass
+                    alst.append(data)
+                return alst
+            else:
+                for i in range(fileline):
+                    data = File.readline()
+                for i in data.split(';'):
+                    try:
+                        alst.append(float(i))
+                    except:
+                        pass
     return alst
 
 def number2string(number):

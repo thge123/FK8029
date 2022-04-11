@@ -16,3 +16,5 @@ rcParams['figure.subplot.right'] = 0.99
 rcParams['figure.subplot.top'] = 0.95
 rcParams['mathtext.fontset'] = 'stix'
 rcParams['font.family'] = 'STIXGeneral'
+rcParams['axes.labelsize'] = 32
+rcParams['grid.alpha'] = 0.5

@@ -14,6 +14,7 @@ typedef Triplet<double> triplet;
 Matrix<double,Dynamic,Dynamic> zeros(int M, int N);
 Matrix<double,Dynamic,1>       zeros(int M);
 Matrix<complex<double>,Dynamic,1>       solve(MatrixXcd &A, VectorXcd &b);
+VectorXd copy(VectorXd *X);
 Vector4d copy(Vector4d *X);
 VectorXd invPowerIter(SparseMatrix<double>&,double shift,double *lam,double *err);
 
@@ -42,13 +43,13 @@ struct Files get_files(int);
 
 struct Params{
 
-    int    N;         // Number of coords.
-    double Delta  = 0.1; 
-    int    iters  = 100;
-    double lambda = 1;
-    Vector4d AvgElocals;
-    Vector4d VarElocals;
-    Vector4d alphas;
+    int    N      = 2;     // Number of particles 
+    double Delta  = 0.1;   // Maximum displacement
+    int    iters  = 100;   // MC iterations
+    double lambda = 1;     // Coulomb coupling
+    Vector4d AvgElocals;   // Samples of avg. local energies
+    Vector4d VarElocals;   // Samples of var. local energies
+    Vector4d alphas;       // Trial function params.
 
 };
 
@@ -60,7 +61,9 @@ double r1(Vector4d*);
 double r2(Vector4d*);
 double psi(Vector4d*, struct Params*,int);
 double Hpsi(Vector4d*, struct Params*,int);
+Vector4d dX(double h, int j);
 double ELocal(Vector4d*, struct Params*,int);
+double ELocal2(Vector4d*, struct Params*,int);
 void MonteCarlo(Vector4d*, struct Params*,int);
 void sample (Vector4d*,struct Params*,int);
 void gss_MonteCarlo(Vector4d*,struct Params*);

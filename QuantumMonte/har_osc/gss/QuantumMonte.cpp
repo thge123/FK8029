@@ -4,9 +4,6 @@ struct Params get_parameters(){
         
     struct Params params;
     
-    cout << "Write number of particles: ";
-    cin  >> params.N;
-    
     cout << "Write Delta: ";
     cin  >> params.Delta;
 
@@ -65,8 +62,6 @@ VectorXd init_function(struct Params *params){
     return X;
 }
 
-    
-
 void sample(struct Params *params, VectorXd *X, int j, int k){
 
     /* j is number of iteration. 
@@ -107,9 +102,6 @@ void gss_MonteCarlo(VectorXd *X, struct Params *params){
     OutStreamA.open(files.filenameA);
     OutStreamA.precision(16);
 
-    
-    
-
     double phi = 1.618033988749;
     double a = (params -> alphas)(0);
     double b = (params -> alphas)(3);
@@ -130,9 +122,11 @@ void gss_MonteCarlo(VectorXd *X, struct Params *params){
         if (Ec<Ed){
             b = d;
             (params -> alphas)(3) = d;
+            OutStreamA << d << ";" << Ed << ";" << (params -> VarElocals)(2) << endl;
         } else {
             a = c;
             (params -> alphas)(0) = c;
+            OutStreamA << c << ";" << Ec << ";" << (params -> VarElocals)(1) << endl;
         }
 
         c = b-(b-a)/phi;
@@ -146,8 +140,8 @@ void gss_MonteCarlo(VectorXd *X, struct Params *params){
         Ec = (params -> AvgElocals)(1);
         Ed = (params -> AvgElocals)(2);
         k++;
-        OutStreamA << c << ";" << Ec << ";" << (params -> VarElocals)(1) << endl;
-        OutStreamA << d << ";" << Ed << ";" << (params -> VarElocals)(2) << endl;
+        //OutStreamA << c << ";" << Ec << ";" << (params -> VarElocals)(1) << endl;
+        //OutStreamA << d << ";" << Ed << ";" << (params -> VarElocals)(2) << endl;
     }
 
     OutStreamA.close();
@@ -167,24 +161,7 @@ void MonteCarlo(VectorXd *X, struct Params *params,int k){
     VectorXd oldX(N);
     oldX = copy(X);
 
-    int equilib = 5000;
-    for (int i=1; i<equilib; i++){
-        perturb(X,params);
-        p = trial(X,params,k)/trial(&oldX,params,k);
-        p = p*p;
-        if (p>=1){
-            oldX = copy(X);
-            totAcc++;
-        } else {
-            random = (rand() % 1000)/1000.0;
-            if (random<p){
-                oldX = copy(X); 
-                totAcc++;
-            } else
-                *X = copy(&oldX);
-        }
-    }
-
+    int equilib = 10000;
     for (int i=1; i<iters; i++){
         perturb(X,params);
         p = trial(X,params,k)/trial(&oldX,params,k);
@@ -200,8 +177,9 @@ void MonteCarlo(VectorXd *X, struct Params *params,int k){
             } else
                 *X = copy(&oldX);
         }
-        sample(params,X,i,k);
+        if (i>equilib)
+            sample(params,X,i-equilib,k);
     }
-//    cout << "Acceptence ratio: " << (double) totAcc/iters << endl;
+    cout << "Acceptence ratio: " << (double) totAcc/iters << endl;
 }
 

@@ -65,8 +65,7 @@ void write_vector(VectorXcd &X, ofstream &OutStream){
 
 void write_vector(Vector4d &X, ofstream &OutStream){
 
-    int N = X.rows();
-    for (int i=0; i<N; i++) OutStream << X(i) << ';';
+    for (int i=0; i<4; i++) OutStream << X(i) << ';';
     OutStream << endl;
 }
 

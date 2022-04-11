@@ -4,29 +4,27 @@ struct Params get_parameters(){
         
     struct Params params;
     
-    cout << "Write number of particles: ";
-    cin  >> params.N;
-    
     cout << "Write Delta: ";
     cin  >> params.Delta;
 
     cout << "Write iters: ";
     cin  >> params.iters;
 
-    params.alphas     = zeros(4);
-    params.AvgElocals = zeros(4);
-    params.VarElocals = zeros(4);
+    cout << "Write lambda: ";
+    cin  >> params.lambda;
+    
 
+    for (int i=0; i<4; i++){
+        params.alphas(i) = 0.0;
+        params.AvgElocals(i) = 0.0;
+        params.VarElocals(i) = 0.0;
+    }
 
-    double a;
     cout << "Write first alpha: ";
-    cin  >> a;
-    (params.alphas)(0) = a;
+    cin  >> (params.alphas)(0);
 
-    double b;
     cout << "Write second alpha: ";
-    cin  >> b;
-    (params.alphas)(3) = b;
+    cin  >> (params.alphas)(3);
 
     return params;
 }
@@ -55,12 +53,15 @@ double r12(Vector4d *X){
 
 double psi(Vector4d *X, struct Params *params, int j){
     
-    double prod = 1;
     double alpha  = (params -> alphas)(j);
     double lambda = (params -> lambda);
+    double R1  = r1(X);
+    double R2  = r2(X);
+    double R12 = r12(X);
 
-    prod *= exp(-(r1(X)*r1(X)+r2(X)*r2(X))/2);
-    prod *= exp(lambda*r12(X)/(1+alpha*r12(X)));
+    double prod = 1.0;
+    prod *= exp(-(R1*R1+R2*R2)/2.0);
+    prod *= exp(lambda*R12/(1.0+alpha*R12));
 
     return prod;
 }
@@ -69,31 +70,37 @@ double Hpsi(Vector4d *X, struct Params *params, int j){
 
     double alpha  = (params -> alphas)(j);
     double lambda = (params -> lambda);
-    double beta = lambda/(1+alpha*r12(X));
-    double out=0;
+    double R = r12(X);                
+    double gamma = 1+alpha*R;
+    double beta = lambda/gamma;
     double Psi = psi(X,params,j);
-    double R = r12(X);
-    double x12 = (*X)(0)-(*X)(2);
-    double y12 = (*X)(1)-(*X)(3);
+    double x1  = (*X)(0);
+    double y1  = (*X)(1);
+    double x2  = (*X)(2);
+    double y2  = (*X)(3);
+    double x12 = x1-x2;
+    double y12 = y1-y2;
 
+    double out=0;
     // **** Second derivative **** 
     // Square part
-    out += pow(beta*(x12/R) -(*X)(0),2.0);
-    out += pow(beta*(y12/R) -(*X)(1),2.0);
-    out += pow(beta*(-x12/R)-(*X)(2),2.0);
-    out += pow(beta*(-y12/R)-(*X)(3),2.0);
+    out += pow(beta*(x12/R) - x1,2.0);
+    out += pow(beta*(y12/R) - y1,2.0);
+    out += pow(beta*(-x12/R)- x2,2.0);
+    out += pow(beta*(-y12/R)- y2,2.0);
 
-    out += -2*(1+2*lambda*alpha/pow(1+alpha*R,3.0));
-    out += -(1/r1(X))*(r1(X)-lambda/pow(1+alpha*R,2.0));
-    out += -(1/r2(X))*(r1(X)-lambda/pow(1+alpha*R,2.0));
+    out +=  2*lambda/(gamma*gamma*R); 
+    out += -4*lambda*alpha/(gamma*gamma*gamma);
+    out += -2;
+    out += -2;
 
     out *= -Psi/2;
     // **** End of second derivative ****
 
     // **** Potential part ****
     // Harmonic oscillator
-    out += ((*X)(0)/2+(*X)(1)/2+(*X)(2)/2+(*X)(3)/2)*Psi;
-    out += lambda/r12(X);
+    out += (x1*x1/2+y1*y1/2+x2*x2/2+y2*y2/2)*Psi;
+    out += lambda*Psi/R;
 
     return out;
 }
@@ -102,6 +109,60 @@ double ELocal(Vector4d *X, struct Params *params, int j){
 
     double out = Hpsi(X,params,j);
     return out/psi(X,params,j);
+}
+
+Vector4d dX(double h, int j){
+    
+    Vector4d X = zeros(4);
+    X(j) = h;
+    return X;
+}
+
+double ELocal2(Vector4d *X, struct Params *params, int j){
+    double alpha  = (params -> alphas)(j);
+    double lambda = (params -> lambda);
+    double R = r12(X);
+    double Psi = psi(X,params,j);
+    double x1  = (*X)(0);
+    double y1  = (*X)(1);
+    double x2  = (*X)(2);
+    double y2  = (*X)(3);
+
+    double h=0.001;
+
+    Vector4d Dummy = *X + dX(-h,0);
+    double f2x1 = psi(&Dummy,params,j);
+    f2x1 += -2*Psi;
+    Dummy = *X + dX(h,0);
+    f2x1 += psi(&Dummy,params,j);
+    f2x1 /= h*h;
+
+    Dummy = *X+dX(-h,1);
+    double f2y1 = psi(&Dummy,params,j);
+    f2y1 += -2*Psi;
+    Dummy = *X+dX(h,1);
+    f2y1 += psi(&Dummy,params,j);
+    f2y1 /= h*h;
+    
+    Dummy = *X+dX(-h,2);
+    double f2x2 = psi(&Dummy,params,j);
+    f2x2 += -2*Psi;
+    Dummy = *X+dX(h,2);
+    f2x2 += psi(&Dummy,params,j);
+    f2x2 /= h*h;
+
+    Dummy = *X+dX(-h,3);
+    double f2y2 = psi(&Dummy,params,j);
+    f2y2 += -2*Psi;
+    Dummy = *X+dX(h,3);
+    f2y2 += psi(&Dummy,params,j);
+    f2y2 /= h*h;
+
+    double out = -0.5*(f2x1+f2y1+f2x2+f2y2)/Psi;
+    out += (x1*x1/2+y1*y1/2+x2*x2/2+y2*y2/2);
+    out += lambda/R;
+
+    return out;
 }
 
 void perturb(Vector4d *X, struct Params *params){
@@ -131,7 +192,7 @@ void sample(Vector4d *X, struct Params *params, int j, int k){
     /* j is number of iteration. 
      * k is which instance of a single )(k) = (j-1)*(params -> Avparameter. */
 
-    double Elocal = ELocal(X,params,k);
+    double Elocal = ELocal2(X,params,k);
 
     (params -> VarElocals)(k) += pow((params -> AvgElocals)(k),2.0);
 
@@ -160,9 +221,8 @@ void gss_MonteCarlo(Vector4d *X, struct Params *params){
     cout << "Write filenumber: ";
     cin  >> filenumber;
     struct Files files = get_files(filenumber);
-    ofstream OutStreamA;
-    OutStreamA.open(files.filenameA);
-    OutStreamA.precision(16);
+    ofstream OutStreamB;
+    OutStreamB.open(files.filenameB);
 
     double phi = 1.618033988749;
     double a = (params -> alphas)(0);
@@ -184,9 +244,11 @@ void gss_MonteCarlo(Vector4d *X, struct Params *params){
         if (Ec<Ed){
             b = d;
             (params -> alphas)(3) = d;
+            OutStreamB << d << ";" << Ed << ";" << (params -> VarElocals)(2) << endl;
         } else {
             a = c;
             (params -> alphas)(0) = c;
+            OutStreamB << c << ";" << Ec << ";" << (params -> VarElocals)(1) << endl;
         }
 
         c = b-(b-a)/phi;
@@ -200,11 +262,9 @@ void gss_MonteCarlo(Vector4d *X, struct Params *params){
         Ec = (params -> AvgElocals)(1);
         Ed = (params -> AvgElocals)(2);
         k++;
-        OutStreamA << c << ";" << Ec << ";" << (params -> VarElocals)(1) << endl;
-        OutStreamA << d << ";" << Ed << ";" << (params -> VarElocals)(2) << endl;
     }
 
-    OutStreamA.close();
+    OutStreamB.close();
 }
 
 void MonteCarlo(Vector4d *X, struct Params *params,int k){
@@ -221,7 +281,6 @@ void MonteCarlo(Vector4d *X, struct Params *params,int k){
     /* Copy X */
     Vector4d oldX;
     oldX = copy(X);
-    cout << "Made it" << endl;
 
     int equilib = 5000;
     for (int i=1; i<iters; i++){
@@ -239,8 +298,9 @@ void MonteCarlo(Vector4d *X, struct Params *params,int k){
             } else
                 *X = copy(&oldX);
         }
-        if (i>equilib)
+        if (i>equilib){
             sample(X,params,i-equilib,k);
+        }
     }
     cout << "Acceptence ratio: " << (double) totAcc/iters << endl;
 }

@@ -81,6 +81,13 @@ VectorXd copy(VectorXd *X){
     return Y;
 }        
 
+Vector4d copy(Vector4d *X){
+    
+    Vector4d Y;
+    for (int i=0; i<N; i++) Y(i) = (*X)(i);
+    return Y;
+}        
+
 //Matrix<complex<double>,Dynamic,1> solve(MatrixXcd &A, VectorXcd &b){
 //
 //    // Solve using partial LU

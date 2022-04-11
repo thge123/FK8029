@@ -2,6 +2,8 @@ from PLOTTING import *
 import FILES
 from numpy import array,exp,log
 from numpy import abs as ABS
+from seaborn import kdeplot
+from numpy.random import normal
 
 psi = {1: lambda t: exp(-t**2/2),
        2: lambda t: t*exp(-t**2/2),
@@ -9,94 +11,32 @@ psi = {1: lambda t: exp(-t**2/2),
        4: lambda t: (2*t**3-3*t)*exp(-t**2/2)
       }
 
-def plot(ax,params,y,density=False,shift=0,pot_shift=0,Color='k'):
-    
-    h = params['h']
-    N = params['N']
+r1 = []
+r2 = []
+for i in range(1,15000):
+    X = FILES.get_data('A/A001.dat',fileline=i)
+    r1.append((X[0],X[1]))
+    r2.append((X[2],X[3]))
+r1 = array(r1)
+r2 = array(r2)
 
-    x = array([j*h for j in range(int(N+1))])
-    y0 = max(ABS(y))
-    if params['parity'] == 'odd':
-        y = array([0] + [j/y0 for j in y] + [0])
-        if density:
-            y = normalized_density(x,y)
-            ax.plot(x,y+shift,c=Color)
-            ax.plot(-x,y+shift,c=Color)
-        else:
-            ax.plot(x,y+shift,c=Color)
-            ax.plot(-x,-y+shift,c=Color)
-    else:
-        y = array([j/y0 for j in y] + [0,0])
-        if density:
-            y = normalized_density(x,y)
-            ax.plot(x,y+shift,c=Color)
-            ax.plot(-x,y+shift,c=Color)
-        else:
-            ax.plot(x,y+shift,c=Color)
-            ax.plot(-x,y+shift,c=Color)
-    E = params['E']
-    print('E = ', E)
-    print('err = ', params['err'])
-    Pot = [pot(j) for j in x]
-    Pot = [pot_shift*j/max(Pot) for j in Pot]
-    ax.plot(x,Pot,ls='--',c=Color)
-    ax.plot(-x,Pot,ls='--',c=Color)
+gaussian1 = normal(0,0.5**0.5,size=len(r1))
+gaussian2 = normal(0,0.5**0.5,size=len(r2))
 
-    ax.plot([x[0],x[-1]],[shift,shift],ls='--',c=Color)
-    ax.plot([-x[-1],x[0]],[shift,shift],ls='--',c=Color)
-    
+fig = plt.figure()
+ax1  = fig.add_subplot(111)
 
-def pot(x):
-    alpha = 10
-    return x**2
-    return x**2+alpha*exp(-x**2)-(1+log(alpha))
+x1 = array([j[0] for j in r1])
+y1 = array([j[1] for j in r1])
+x2 = array([j[0] for j in r2])
+y2 = array([j[1] for j in r2])
+kdeplot(x=x1,y=y1,fill=True,levels=20,ax=ax1)
+kdeplot(x=x2,y=y2,fill=True,levels=20,ax=ax1)
+#kdeplot(x=gaussian1,y=gaussian2,fill=False,levels=20,ax=ax1)
+ax1.set_aspect('equal')
 
+plt.show()
 
-def normalized_density(X,y):
-
-    I = 0
-    y_out = y**2
-    for i in range(len(X)-1):
-        y_avg = (y_out[i+1]+y_out[i])/2
-        I += y_avg*(X[i+1]-X[i])
-    return y_out/(2*I)
-
-
-def main():
-
-    fig = plt.figure()
-    ax  = fig.add_subplot(111)
-    M = 8
-    j = 14 
-    A = 'A/A'+FILES.number2string(j)+'.dat'
-    B = 'B/B'+FILES.number2string(j)+'.dat'
-    for i in range(1,M):
-        state = i    # state 1 = ground state
-
-        X = FILES.get_data(A,fileline=state)
-        E = FILES.get_data(B, fileline=state)
-        params = {'E': E[0], 'N': E[1], 'h': E[2], 'err': E[3]}
-
-        if state%2 == 1:
-            params['parity'] = 'even'
-        else:
-            params['parity'] = 'odd'
-        
-        plot(ax,params,X,density=True,shift=params['E'],pot_shift=2*M)
-    ax.set_xlabel(r'$x\sqrt{m\omega/\hbar}$',fontsize=32)
-    ax.set_ylabel(r"$2E/\hbar\omega$",fontsize=32)
-    ax.plot([1e6,1e6],[1e6,1e6],c='k',label=r'Probability densities for $\alpha=0$.')
-    ax.set_xlim(-8.2,8.2)
-    ax.set_xticks([-6,-4,-2,0,2,4,6])
-    ax.set_ylim(-0,13)
-    ax.set_yticks([1,3,5,7,9,11])
-    ax.legend(loc='upper center',framealpha=0)
-
-
-    plt.show()
-    
-
-main()
 
 
 

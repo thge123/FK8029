@@ -42,7 +42,7 @@ struct Files get_files(int);
 
 struct Params{
 
-    int    N;         // Number of coords.
+    int    N=1;         // Number of particles
     double Delta  = 0.1; 
     int    iters  = 100;
     Vector4d AvgElocals;
@@ -52,8 +52,8 @@ struct Params{
 };
 
 struct Params get_parameters();
-void perturb(VectorXd*, struct Params*);
-VectorXd init_function(struct Params*);
+void perturb(Vector4d*, struct Params*);
+VectorXd init_config(struct Params*);
 double trial(VectorXd*, struct Params*,int);
 void MonteCarlo(VectorXd*, struct Params*,int);
 void sample (VectorXd*,struct Params*,int);

@@ -4,7 +4,7 @@ int main(){
     
     srand(time(0));
     struct Params params = get_parameters();
-    VectorXd X;
-    X = init_function(&params);
+    Vector4d X;
+    X = init_config(&params);
     MonteCarlo(&X,&params,0);
 }

@@ -4,9 +4,6 @@ struct Params get_parameters(){
         
     struct Params params;
     
-    cout << "Write number of particles: ";
-    cin  >> params.N;
-    
     cout << "Write Delta: ";
     cin  >> params.Delta;
 
@@ -50,7 +47,7 @@ void perturb(VectorXd *X, struct Params *params){
 
 VectorXd init_function(struct Params *params){
 
-    VectorXd X(params -> N);
+    VectorXd X;
     X = zeros(params -> N);
     return X;
 }

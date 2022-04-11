@@ -76,8 +76,15 @@ VectorXd invPowerIter(SparseMatrix<double> &B,
 VectorXd copy(VectorXd *X){
     
     int N = (*X).rows();
-    VectorXd Y(N);
+    Vector4d Y(N);
     for (int i=0; i<N; i++) Y(i) = (*X)(i);
+    return Y;
+}        
+
+Vector4d copy(Vector4d *X){
+    
+    Vector4d Y;
+    for (int i=0; i<4; i++) Y(i) = (*X)(i);
     return Y;
 }        
 
