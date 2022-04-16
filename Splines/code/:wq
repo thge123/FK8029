@@ -1,0 +1,47 @@
+from PLOTTING import *
+from numpy import array,zeros,exp,cos
+from numpy.linalg import solve
+from scipy.interpolate import BSpline
+
+def sigma(x):
+    return 1.0*(0.8>x)
+    alpha = 10
+    return 4*alpha**3*exp(-2*alpha*x)/3
+
+def numsol(N):
+
+    h = 1/(N-1)
+    A = zeros((N-2,N-2))
+    b = zeros(N-2)
+    
+    A[0,0] = -2.0
+    A[0,1] = 1.0
+    b[0]   = -3.0*h**3*sigma(h)
+    print(h)
+    for i in range(1,N-3):
+        A[i,i-1] = 1.0
+        A[i,i]   = -2.0
+        A[i,i+1] = 1.0
+        b[i]     = -3.0*(i+1)*h**3*sigma((i+1)*h)
+        print((i+1)*h)
+    A[N-3,N-4]   = 1.0
+    A[N-3,N-3]   = -2.0
+    b[N-3]       = -3.0*(N-2)*h**3*sigma((N-1)*h)
+    print((N-2)*h)
+
+    X = array([j*h for j in range(N)])
+    Y = solve(A,b)
+    Y = array([0] + [j for j in Y] + [0])
+    return X,Y
+
+def main():
+    for N in [10,20,50,100,200,300]:
+        X,Y = numsol(N)
+        plt.plot(X,(Y+X))
+        #plt.plot(X,-0.5*X**3+1.5*X)
+    plt.show()
+
+main()
+
+        
+
