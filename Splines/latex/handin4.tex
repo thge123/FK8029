@@ -65,6 +65,7 @@ where $r_0$ is equal to $R$ for the first distribution, $R_2$ for the second dis
 \end{equation}
 where $\sigma = 4\pi r_0^3\rho/q$. The boundary conditions for $\lambda$ are $\lambda(0) = 0$ and $\lambda(1)=1$. Defining a new function, $g(\xi) = \lambda(\xi) - \xi$, we obtain the following boundary value problems:
 \begin{equation}
+    \label{17apr0918}
     \begin{split}
         &g''(\xi) + \xi\sigma(\xi) = 0 \\ 
         &g(0) = g(1) = 0.
@@ -76,11 +77,7 @@ To do so, a collocation method with B-splines as candidate solutions was used. T
 \begin{equation}
     \hat{g}(\xi) = \sum_{j=0}^{n-1}c_jB_{j,k}(\xi)
 \end{equation}
-where $B_{j,k}$ are B-splines of order $k=4$. Five knot points were placed at $\xi=0$ and another five at $\xi=1$ so that the only non-zero B-spline at $\xi=0$ was $B_{1,k}$ and the only non-zero B-spline at $\xi=1$ was $B_{n,k}$. The boundary conditions were thus satisfied by setting $c_1=c_{n-1}=0$. The collocation points were Chebyshev nodes, 
-\begin{equation}
-    \xi_k = \frac{1}{2} + \frac{1}{2}\cos\left(\frac{\pi(2k-1)}{2(n-2)}\right),
-\end{equation}
-where $k=1,2,\dots n-2$. The coefficients were then obtained by solving the linear system of equations:
+where $B_{j,k}$ are B-splines of order $k=3$. Four knot points were placed at $\xi=0$ and another four at $\xi=1$ so that the only non-zero B-spline at $\xi=0$ was $B_{1,k}$ and the only non-zero B-spline at $\xi=1$ was $B_{n,k}$. The boundary conditions were thus satisfied by setting $c_1=c_{n-1}=0$. The other knot points, as well as the collocation points $\xi_k$, were evenly spaced on $(0,1)$. The coefficients were then obtained by solving the linear system of equations:
 \begin{equation}
     \begin{split}
         &c_0 = 0, \quad c_{n-1} = 0, \\ 
@@ -89,7 +86,28 @@ where $k=1,2,\dots n-2$. The coefficients were then obtained by solving the line
 \end{equation}
 
 \subsection*{Results}
+The results for the first charge distribution can be seen in figures \ref{17apr0917} and \ref{17apr0937}. In the first figure, the B-spline approximation $\hat{g}$ to the boundary value problem \eqref{17apr0918} is plotted along with the B-splines used and the exact solution $g$. In the second figure, the electric potential and field are plotted. The B-spline approximation was compared to the exact solution and it was found that even for a small number of B-splines ($<10$), the errors in the collocation points were vanishingly small. The electric potential and field of the shell charge distribution is shown in figure \ref{17apr0950} and the same for the hydrogen charge distribution in figure \ref{17apr0959}. The maximum error of $|g-\hat{g}|$ in the collocation points as a function of the number of splines is plotted in figure \ref{17apr0946}.
 
+\begin{figure}[b!]
+    \includegraphics[scale=0.35]{Uniform_g.png}
+    \caption{The solution to the boundary value problem given in equation \eqref{17apr0918} for the uniformily charged sphere. Nine B-splines were used (plotted in background) for which the coefficients were $\mathbf{c} = (0,0.028,0.08,0.15,0.19,0.19,0.14,0.056,0)$.}
+    \label{17apr0917}
+    \includegraphics[scale=0.35]{Uniform_EPhi.png}
+    \caption{The potential and electric field inside a uniformily charged sphere.}
+    \label{17apr0937}
+\end{figure}
+
+\begin{figure}[t!]
+    \includegraphics[scale=0.35]{Shell_EPhi.png}
+    \caption{The electric potential and field inside a shell with inner and outer radii ratio $R_1/R_2=0.5$. The number of B-splines was 84 and the maximum error in a collocation point was $\approx 2\cdot 10^{-5}$.}
+    \label{17apr0950}
+    \includegraphics[scale=0.35]{Hydrogen_EPhi.png}
+    \caption{The electric potential and field of the electron charge distribution of a hydrogen atom. The number of B-splines was 84 and the maximum error in a collocation point was $\approx 3\cdot 10^{-3}$.}
+    \label{17apr0959}
+    \includegraphics[scale=0.35]{Errors.png}
+    \caption{The errors in the collocation points of the shell and hydrogen charge distributions when using the B-spline approximation.}
+    \label{17apr0946}
+\end{figure}
 
 
 

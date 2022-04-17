@@ -1,5 +1,5 @@
 from PLOTTING import *
-from BSpline import *
+from BSpline2 import *
 
 def main():
 
@@ -12,7 +12,7 @@ def main():
     #i = int(input("Write sigma [1,2,3]: ")) - 1 
     #N = int(input("Write N: "))
     X   = array([j/100 for j in range(101)])
-    Ns = [1+j for j in range(50)]
+    Ns = [1+j for j in range(37)]
     labels = {0: 'Sphere',1: 'Shell', 2: 'Hydrogen'}
     for i in range(3):
         err = []

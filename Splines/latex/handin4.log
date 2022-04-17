@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.10.31)  16 APR 2022 16:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.10.31)  17 APR 2022 10:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -353,30 +353,60 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 13.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./handin4.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+<Uniform_g.png, id=16, 693.792pt x 519.6213pt>
+File: Uniform_g.png Graphic file (type png)
+<use Uniform_g.png>
+Package pdftex.def Info: Uniform_g.png  used on input line 92.
+(pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
+<Uniform_EPhi.png, id=18, 693.792pt x 519.6213pt>
+File: Uniform_EPhi.png Graphic file (type png)
+<use Uniform_EPhi.png>
+Package pdftex.def Info: Uniform_EPhi.png  used on input line 95.
+(pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
+<Shell_EPhi.png, id=19, 693.792pt x 519.6213pt>
+File: Shell_EPhi.png Graphic file (type png)
+<use Shell_EPhi.png>
+Package pdftex.def Info: Shell_EPhi.png  used on input line 101.
+(pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
+<Hydrogen_EPhi.png, id=20, 693.792pt x 519.6213pt>
+File: Hydrogen_EPhi.png Graphic file (type png)
+<use Hydrogen_EPhi.png>
+Package pdftex.def Info: Hydrogen_EPhi.png  used on input line 104.
+(pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
+<Errors.png, id=21, 693.792pt x 519.6213pt>
+File: Errors.png Graphic file (type png)
+<use Errors.png>
+Package pdftex.def Info: Errors.png  used on input line 107.
+(pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
+ [2 <./Uniform_g.png> <./Uniform_EPhi.png> <./Shell_EPhi.png> <./Hydrogen_EPhi.
+png> <./Errors.png>] (./handin4.aux) ) 
 Here is how much of TeX's memory you used:
- 6198 strings out of 481239
- 94687 string characters out of 5920376
- 373824 words of memory out of 5000000
- 21406 multiletter control sequences out of 15000+600000
- 537895 words of font info for 45 fonts, out of 8000000 for 9000
+ 6256 strings out of 481239
+ 95528 string characters out of 5920376
+ 375824 words of memory out of 5000000
+ 21453 multiletter control sequences out of 15000+600000
+ 540521 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,15n,42p,687b,230s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-sy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pf
-b>
-Output written on handin4.pdf (1 page, 101870 bytes).
+ 43i,15n,42p,884b,389s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmm
+i12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmsy8.pfb>
+Output written on handin4.pdf (2 pages, 405559 bytes).
 PDF statistics:
- 48 PDF objects out of 1000 (max. 8388607)
- 34 compressed objects within 1 object stream
+ 78 PDF objects out of 1000 (max. 8388607)
+ 49 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
