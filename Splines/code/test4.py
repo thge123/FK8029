@@ -4,14 +4,14 @@ from BSpline2 import *
 def main():
 
     
-    i = int(input("Write sigma [1,2,3]: ")) - 1 
-    N = int(input("Write number of splines (>4): "))-3
+    i = int(input("Write sigma [1,2,3,4,5]: ")) - 1 
+    N = int(input("Write number of splines: "))-3
     X   = array([j/1000 for j in range(1001)])
-    exact_sol = [sigma1_exact,sigma2_exact,sigma3_exact][i]
+    exact_sol = [sigma1_exact,sigma2_exact,sigma3_exact,sigma4_exact,sigma5_exact][i]
 
     if i == 1:
         r = float(input("Write r: "))
-    elif i == 2:
+    elif i in [2,3,4]:
         r = float(input("Write alpha: "))
     else:
         r = 1
@@ -39,29 +39,38 @@ def main():
     axx.plot(X[1:],V,lw=2,c='b')
     axx.plot(X[:-1],E,c='k',lw=2)
     if i==2:
-        axx.text(s='Exact solution',x=0.7,y=100)
+        axx.text(s='Exact solution',x=0.7,y=75)
     else:
         axx.text(s='Exact solution',x=0,y=0.75)
     axx.grid(linestyle='--')
 
-    xlabels = {0:r'$r/R$',1:r'$r/R_2$',2:r'$r/({}a_0)$'.format(int(r))}
+    xlabels = {0:r'$r/R$',
+               1:r'$r/R_2$', 
+               2:r'$r/({}a_0)$'.format(int(r)),
+               3:r'$r/({}a_0)$'.format(int(r)),
+               4:r'$r/({}a_0)$'.format(int(r))}
     axx.set_xlabel(xlabels[i])
 
     legends = {0:r'$\varphi/(q/4\pi\epsilon_0 R)$',
                1:r'$\varphi/(q/4\pi\epsilon_0 R_2)$',  
                2:r'$\varphi/(q/4\pi\epsilon_0 ({}a_0))$'.format(int(r)),
-               3:r'$E/(q/4\pi\epsilon_0 R^2)$',
-               4:r'$E/(q/4\pi\epsilon_0 R_2^2)$',  
-               5:r'$E/(q/4\pi\epsilon_0 ({}a_0)^2)$'.format(int(r))}
+               3:r'$\varphi/(q/4\pi\epsilon_0 ({}a_0))$'.format(int(r)),
+               4:r'$\varphi/(q/4\pi\epsilon_0 ({}a_0))$'.format(int(r)),
+               5:r'$E/(q/4\pi\epsilon_0 R^2)$',
+               6:r'$E/(q/4\pi\epsilon_0 R_2^2)$',  
+               7:r'$E/(q/4\pi\epsilon_0 ({}a_0)^2)$'.format(int(r)),
+               8:r'$E/(q/4\pi\epsilon_0 ({}a_0)^2)$'.format(int(r)),
+               9:r'$E/(q/4\pi\epsilon_0 ({}a_0)^2)$'.format(int(r))}
 
     #ax.plot(X,uu,label='Potential times distance')
     ax.plot(X[1:],VV,label=legends[i],lw=2,c='b',ls='--')
-    ax.plot(X[:-1],EE,label=legends[i+3],lw=2,ls='dashdot',c='k')
+    ax.plot(X[:-1],EE,label=legends[i+5],lw=2,ls='dashdot',c='k')
     if i==2:
-        ax.text(s='Numerical solution',x=0.7,y=100)
+        ax.text(s='Numerical solution',x=0.7,y=75)
+        ax.text(s='1s state',x=0.2,y=125)
     else:
         ax.text(s='Numerical solution',x=0,y=0.75)
-    ax.legend(framealpha=0,loc='lower right')
+    ax.legend(framealpha=0,loc='upper right')
     ax.grid(linestyle='--')
     plt.show()
 

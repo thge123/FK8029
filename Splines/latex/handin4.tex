@@ -1,13 +1,13 @@
 \documentclass[twocolumn]{article}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath,amssymb,physics,mathtools,blindtext,graphicx}
+\usepackage{amsmath,amssymb,physics,mathtools,blindtext,graphicx,float}
 \usepackage[a4paper,total={7.5in,10in}]{geometry}
 \usepackage[labelfont=bf]{caption}
 
 \begin{document}
 \begin{large}
-\section*{Solving the spherically symmetric Poisson's equation using B splines}
+\section*{Solving the spherically symmetric Poisson equation using B splines}
 \subsection*{Introduction}
 Poisson's equation is given by
 \begin{equation}
@@ -45,9 +45,13 @@ A description will now be given on how this equation was solved numerically usin
     where $R_1$ and $R_2$ are the inner and outer radii, respectively.
     \item[3.] The electron charge distribution in an hydrogen atom:
     \begin{equation}
-        \rho(r) = \frac{q}{\pi a_0^3}e^{-2r/a_0}
+        \begin{split}
+            &\rho_{1\text{s}}(r) = \frac{q}{\pi a_0^3}e^{-2r/a_0} \\
+            &\rho_{2\text{s}}(r) = \frac{q}{32\pi a_0^3}\left(2-\frac{r}{a_0}\right)^2e^{-r/a_0} \\
+            &\rho_{3\text{s}}(r) = \frac{q}{3\cdot 81^2\pi a_0^3}\left(27-18\frac{r}{a_0}+\frac{r^2}{a_0^2}\right)^2e^{-2r/3a_0} \\
+        \end{split}
     \end{equation}
-    where $q$ is the charge of an electron and $a_0$ is the Bohr radius.
+    where $a_0$ is the Bohr radius.
 \end{itemize}
 
 
@@ -86,8 +90,6 @@ where $B_{j,k}$ are B-splines of order $k=3$. Four knot points were placed at $\
 \end{equation}
 
 \subsection*{Results}
-The results for the first charge distribution can be seen in figures \ref{17apr0917} and \ref{17apr0937}. In the first figure, the B-spline approximation $\hat{g}$ to the boundary value problem \eqref{17apr0918} is plotted along with the B-splines used and the exact solution $g$. In the second figure, the electric potential and field are plotted. The B-spline approximation was compared to the exact solution and it was found that even for a small number of B-splines ($<10$), the errors in the collocation points were vanishingly small. The electric potential and field of the shell charge distribution is shown in figure \ref{17apr0950} and the same for the hydrogen charge distribution in figure \ref{17apr0959}. The maximum error of $|g-\hat{g}|$ in the collocation points as a function of the number of splines is plotted in figure \ref{17apr0946}.
-
 \begin{figure}[b!]
     \includegraphics[scale=0.35]{Uniform_g.png}
     \caption{The solution to the boundary value problem given in equation \eqref{17apr0918} for the uniformily charged sphere. Nine B-splines were used (plotted in background) for which the coefficients were $\mathbf{c} = (0,0.028,0.08,0.15,0.19,0.19,0.14,0.056,0)$.}
@@ -96,18 +98,32 @@ The results for the first charge distribution can be seen in figures \ref{17apr0
     \caption{The potential and electric field inside a uniformily charged sphere.}
     \label{17apr0937}
 \end{figure}
+The results for the first charge distribution can be seen in figures \ref{17apr0917} and \ref{17apr0937}. In the first figure, the B-spline approximation $\hat{g}$ to the boundary value problem \eqref{17apr0918} is plotted along with the B-splines used and the exact solution $g$ which can be obtained by integrating \eqref{17apr0918} twice. The B-spline approximation was compared to the exact solution and it was found that even for a small number of B-splines ($<10$), the errors in the collocation points were vanishingly small. In the second figure, the electric potential and electric field, (which was obtained by numerically differentiating the potential), are plotted. A similar plot for the second charge distribution is shown in figure \ref{17apr0950} and the same for the hydrogen charge distributions in figures \ref{17apr0959} and \ref{18apr2008}. 
 
-\begin{figure}[t!]
-    \includegraphics[scale=0.35]{Shell_EPhi.png}
-    \caption{The electric potential and field inside a shell with inner and outer radii ratio $R_1/R_2=0.5$. The number of B-splines was 84 and the maximum error in a collocation point was $\approx 2\cdot 10^{-5}$.}
+The parameter $\alpha$, which determined the length scale for the hydrogen distributions, was chosen such that the electric field satisfied $E\approx q/(4\pi\epsilon_0x^2a_0^2)$ for $x \geq \alpha$. For the 1s, 2s and 3s distributions, it proved sufficient to let $\alpha=25$.
+
+
+
+The maximum error of $|g-\hat{g}|$ in the collocation points as a function of the number of splines is plotted in figure \ref{17apr0946}.
+\begin{figure}[b!]
+    \includegraphics[scale=0.35]{shell_ephi.png}
+    \caption{The electric potential and field inside a shell with inner and outer radii ratio $r_1/r_2=0.5$. the number of b-splines was 84 and the maximum error in the collocation points was $\approx 2\cdot 10^{-5}$.}
     \label{17apr0950}
-    \includegraphics[scale=0.35]{Hydrogen_EPhi.png}
-    \caption{The electric potential and field of the electron charge distribution of a hydrogen atom. The number of B-splines was 84 and the maximum error in a collocation point was $\approx 3\cdot 10^{-3}$.}
+    \includegraphics[scale=0.35]{hydrogen_ephi.png}
+    \caption{The electric potential and field of the electron charge distribution of a hydrogen atom. the number of b-splines was 84 and the maximum error in the collocation points was $\approx 3\cdot 10^{-3}$.}
     \label{17apr0959}
+    \includegraphics[scale=0.35]{Hydrogen_23.png}
+    \caption{The maximum errors in the collocation points of the shell and hydrogen charge distributions when using the B-spline approximation.}
+    \label{18apr2008}
+\end{figure}
+\begin{figure}[b!]
     \includegraphics[scale=0.35]{Errors.png}
-    \caption{The errors in the collocation points of the shell and hydrogen charge distributions when using the B-spline approximation.}
+    \caption{}
     \label{17apr0946}
 \end{figure}
+
+
+
 
 
 

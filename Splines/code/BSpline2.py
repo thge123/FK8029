@@ -22,6 +22,7 @@ def numsol(N,i,r):
     print("Knots: ", t)
     print("Number of splines: ", n)
 
+    # Plot the boundary value solution along with B-splines
     X = array([j/1000 for j in range(1001)])
     fig = plt.figure()
     ax  = fig.add_subplot(111)
@@ -42,10 +43,10 @@ def numsol(N,i,r):
     X = array(X)
     print('Collocation points: ', X)
 
-    sigma = [sigma1,sigma2,sigma3][i]
-    sigma_exact = [sigma1_exact,sigma2_exact,sigma3_exact][i]
+    sigma = [sigma1,sigma2,sigma3,sigma4,sigma5][i]
+    sigma_exact = [sigma1_exact,sigma2_exact,sigma3_exact,sigma4_exact,sigma5_exact][i]
     
-    # Construct matrix eq.
+    # Construct matrix eq. and solve
     A[0,0]     = 1.0
     A[n-1,n-1] = 1.0
     c = zeros(n)
@@ -61,14 +62,18 @@ def numsol(N,i,r):
     print("Error Ac-b: ", matmul(A,c)-b)
     print("Solution c: ", c)
 
-    spl = BSpline(t,c,K,extrapolate=False)
-    err = ABS(spl(X)-sigma_exact(X,r))
-    print("Error in collocation points: ",err)
-    print("Maximum error: ",MAX(err))
-    ax.scatter(X,spl(X),facecolor='none',edgecolor='purple',s=200,label='Collocation points')
+    
+    spl = BSpline(t,c,K,extrapolate=False)    # The B-spline solution
+    
+    if i<3:
+        err = ABS(spl(X)-sigma_exact(X,r))        # error in collocation points
+        print("Error in collocation points: ",err)
+        print("Maximum error: ",MAX(err))
+        X = array([j/1000 for j in range(1001)])
+        ax.plot(X,sigma_exact(X,r),c='k',lw=5,label='Exact solution')
 
+    ax.scatter(X,spl(X),facecolor='none',edgecolor='purple',s=200,label='Collocation points')
     X = array([j/1000 for j in range(1001)])
-    ax.plot(X,sigma_exact(X,r),c='k',lw=5,label='Exact solution')
     ax.plot(X,spl(X),ls='--',c='r',label='B-spline approximation')
     ax.legend(loc='upper right',framealpha=0)
     ax.set_xlabel(r'$\xi$')

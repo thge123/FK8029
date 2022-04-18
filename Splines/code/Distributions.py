@@ -1,4 +1,4 @@
-from numpy import array,zeros,exp,cos,pi
+from numpy import array,zeros,exp,cos,pi,nan
 
 def sigma1(x,r):
     return 3.0
@@ -27,6 +27,7 @@ def sigma2_exact(X,r):
     return Y
 
 def sigma3(x,alpha):
+    ''' Ground state of hydrogen '''
     return 4*alpha**3*exp(-2*alpha*x)
 
 def sigma3_exact(X,alpha):
@@ -34,3 +35,17 @@ def sigma3_exact(X,alpha):
     B = 1
     Y = -(alpha*X+1)*exp(-2*alpha*X)+A*X+B
     return Y
+
+def sigma4(x,alpha):
+    ''' 200 state of hydrogen '''
+    return (2-alpha*x)**2*alpha**3*exp(-alpha*x)/8
+
+def sigma4_exact(X,alpha):
+    return nan
+
+def sigma5(x,alpha):
+    ''' 300 state of hydrogen '''
+    return 4*alpha**3*(27-18*alpha*x+2*(alpha*x)**2)**2*exp(-2*alpha*x/3)/(3*81**2)
+
+def sigma5_exact(X,alpha):
+    return nan
