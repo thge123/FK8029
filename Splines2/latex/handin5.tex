@@ -1,0 +1,52 @@
+\documentclass[twocolumn]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,physics,mathtools,blindtext,graphicx,float}
+\usepackage[a4paper,total={7.5in,10in}]{geometry}
+\usepackage[labelfont=bf]{caption}
+
+\begin{document}
+\begin{large}
+\begin{equation}
+    \left(-\frac{\hbar^2}{2\mu}\frac{\text{d}^2}{\text{d}r^2} + \frac{\hbar^2\ell(\ell+1)}{2\mu r^2} - \frac{Ze^2}{4\pi\epsilon_0r}\right)P_{n\ell}(r) = EP_{n\ell}(r).
+\end{equation}
+Set 
+\begin{equation}
+    \begin{split}
+        E' &= E/\left(Z^2\mu e^4/(32\pi^2\epsilon_0^2\hbar^2)\right)  \\ 
+        &= E/\left(Z^2\mu\hbar^2/(2m_e^2a_0^2)\right)
+    \end{split}
+\end{equation}
+with this defintion, $E'$ should take the values $-1,-4,-9,\dots$.  
+%\begin{equation}
+%    u_{n\ell} = P_{n\ell}(r)/\sqrt{D}
+%\end{equation}
+Then we get 
+\begin{equation}
+    \label{20apr0705}
+    \hat{H}u = -\beta^2\left(\frac{\text{d}^2}{\text{d}\xi^2}-\frac{\ell(\ell+1)}{\xi^2}+\frac{2}{\beta\xi}\right)u = E'u
+\end{equation}
+where $\beta = m_e/(Z\mu\alpha)$. We write the numerical solution to \eqref{20apr0705} as a linear combination of B-splines of degree $k$:
+\begin{equation}
+    \hat{u}(\xi) = \sum_{j=0}^{n-1}c_jB_{j,k}(\xi).
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{large}
+\end{document}

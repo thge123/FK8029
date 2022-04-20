@@ -28,7 +28,7 @@ def main():
     axs[0].set_yticks([1e-4,1e-3,1e-2])
     axs[1].set_yticks([1e-3,1e-2,1e-1])
     axs[0].text(s='Shell charge distribution',x=22.7,y=2.2e-5)
-    axs[1].text(s='Hydrogen charge distribution',x=22.7,y=0.8e-3)
+    axs[1].text(s='1s state charge distribution',x=22.7,y=0.8e-3)
     
 #    axs[1].set_ylim(-0.08,2.60)
 #    axs[2].set_ylim(-0.08,2.60)
