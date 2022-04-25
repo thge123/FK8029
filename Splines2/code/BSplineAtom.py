@@ -2,9 +2,23 @@ from numpy import array,zeros,pi
 from Numerics import *
 from scipy.interpolate import BSpline
 
-Exact = {'u00': lambda r,D: 2*D**1.5*r*exp(-D*r),
-         'u10': lambda r,D: D**1.5*r*(2-r*D)*exp(-D*r/2)/2**1.5,
-         'u11': lambda r,D: D**2.5*r**2*exp(-D*r/2)/(2*6**0.5),}
+Exact = {'u00': lambda r,D: 2*D**1.5*r*exp(-D*r)                  ,
+         'u10': lambda r,D: D**1.5*r*(2-r*D)*exp(-D*r/2)/2**1.5   ,
+         'u11': lambda r,D: D**2.5*r**2*exp(-D*r/2)/(2*6**0.5)    ,
+         'u20': lambda r,D: 2*D**1.5*r*(1-2*r*D/3+2*(r*D)**2/27)
+                            *exp(-D*r/3)/(3*3**0.5)               ,
+         'u21': lambda r,D: 8*D**2.5*(1-r*D/6)*r**2
+                            *exp(-r*D/3)/(27*6**0.5)              ,
+         'u22': lambda r,D: 4*D**3.5*r**3*exp(-r*D/3)/(81*30**0.5),
+         'u30': lambda r,D: D**1.5*r
+                            *(1-3*D*r/4+(D*r)**2/8-(D*r)**3/192)
+                            *exp(-r*D/4)/4                        ,
+         'u31': lambda r,D: 5*D**2.5*r**2*(1-D*r/4+(D*r)**2/80)
+                            *exp(-r*D/4)/(16*15**0.5)             ,
+         'u32': lambda r,D: D**3.5*r**3*(1-D*r/12)
+                            *exp(-D*r/4)/(64*5**0.5)              ,
+         'u33': lambda r,D: D**4.5*r**4*exp(-r*D/4)/(768*35**0.5)
+        }
 
 def Coulomb(x):
     return -1/x
@@ -131,8 +145,54 @@ def numsol(dct):
     A   = Simpson(u_splSqrd,0,1,N=100)  # normalizing
 
     xx = array([j/1000 for j in range(1001)])
-    plt.plot(xx,u_spl(xx))
-    plt.scatter(t,[0 for i in t],c='k')
-    plt.show()
+    
+    #fig = plt.figure()
+    #ax  = fig.add_subplot(111)
+    #ax.plot(xx,u_spl(xx))
+    #ax.scatter(t,[0 for i in t],c='k')
+    #plt.show()
 
     return (lambda x: u_spl(x)/sqrt(A))
+
+def plot_radial(Atom,exact='False'):
+
+    fig = plt.figure()
+    ax1 = fig.add_subplot(221)
+    ax2 = fig.add_subplot(222)
+    ax3 = fig.add_subplot(223)
+    ax4 = fig.add_subplot(224)
+    axs = [ax1,ax2,ax3,ax4]
+    lss = ['-','--','dashdot','dotted']
+    xx = array([j/1000 for j in range(1001)])
+
+    E   = [-99,-25,-11,-6]
+    ell = [0,1,2,3]
+    D   = [10,30,40,60]
+    for i in range(len(E)):
+        Atom['E'] = E[i]
+        Atom['D'] = D[i]
+        ticks       = 5
+        xticks      = [int(10*j/ticks)/10 for j in range(ticks+1)]
+        xticklabels = [int(j*D[i]/ticks) for j in range(ticks+1)]
+        axs[i].set_xticks(xticks,xticklabels)
+        axs[i].set_title('$n={}$'.format(i+1),fontsize=18)
+        for j in range(i+1):
+            Atom['ell'] = ell[j]
+            if not exact:
+                u = numsol(Atom)
+                axs[i].plot(xx,u(xx)**2/D[i],lw=2,label=r'$\ell = {}$'.format(ell[j]),ls=lss[j])
+            else:
+                name = 'u{}{}'.format(i,j)
+                axs[i].plot(xx,Exact[name](xx,Atom['D'])**2/D[i],
+                            lw=2,label=r'$\ell = {}$'.format(ell[j]),ls=lss[j])
+        axs[i].legend(framealpha=0)
+        axs[i].grid(linestyle='dotted',alpha=0.5)
+
+    if not exact:
+        axs[2].set_ylabel('$r^2 R_{n,\ell}^2$ (Splines)')
+    else:
+        axs[2].set_ylabel('$r^2 R_{n,\ell}^2$ (Exact)')
+    axs[2].set_xlabel('$r/a_0$')
+    
+    plt.show()
+
