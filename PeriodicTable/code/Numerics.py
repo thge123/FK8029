@@ -1,9 +1,9 @@
-from scipy.interpolate import BSpline
-import matplotlib.pyplot as plt
-from numpy import zeros,copy,matmul,eye,dot,array,exp,sqrt
-from numpy.linalg import norm,solve
+from numpy import array,zeros,exp,cos,pi,matmul
+from numpy import copy,dot
+from numpy.linalg import solve,norm
 from numpy.random import rand
 from scipy.special import roots_legendre
+
 
 def InvPower(A,B,x0,shift=0):
     ''' Solve the generalized eigenvalue
@@ -70,3 +70,5 @@ def Quadrature(f,a,b,N=20,deg=8):
         end = beg + h
 
     return Sum
+
+

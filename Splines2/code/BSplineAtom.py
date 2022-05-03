@@ -120,7 +120,7 @@ def knots2(X,D):
 def knots3(X,a):
     return [2**(j**a)-1 for j in X]
 
-def numsol(dct):
+def numsol(dct,PlotSplines=False):
 
     E    = dct['E']
     Z    = dct['Z']
@@ -136,12 +136,12 @@ def numsol(dct):
     # Construct inner points
     X = [j/N for j in range(1,N)]
     #X = knots1(X,0.7)
-    #X = knots2(X,0.4*D)
+    #X = knots2(X,60*D)
     X = knots3(X,2)
     X.sort()
 
     # Degree K and knots t.
-    K = 4
+    K = 3
     t = array((K+1)*[0] + X + (K+1)*[1])
 
     # Total number of splines
@@ -158,16 +158,48 @@ def numsol(dct):
     x0 = rand(len(A))
     eig = InvPower(A,B,x0,shift=E)
     print("Energy: ", eig[0])
+    if 'eigs' in dct:
+        dct['eigs'].append(eig[0])
+    else:
+        dct['eigs'] = [eig[0]]
     sol = array([0] + [j for j in eig[1]] + [0])
     u_spl = BSpline(t,sol,K,extrapolate=False)
 
+    # normalizing
     u_splSqrd = lambda x: u_spl(x)**2
-    A   = Quadrature(u_splSqrd,0,1,N=quadN,deg=quadDeg)  # normalizing
+    A   = Quadrature(u_splSqrd,0,1,N=quadN,deg=quadDeg)
     #A   = Simpson(u_splSqrd,0,1)  # normalizing
+    u   = lambda x: u_spl(x)/sqrt(A)
 
-    xx = array([j/1000 for j in range(1001)])
+    if PlotSplines:
+        ### plot splines
+        fig = plt.figure()
+        ax  = fig.add_subplot(111)
+        xx = array([j/1000 for j in range(1001)])
+        ticks = 5 
+        xticks      = [int(10*j/ticks)/10 for j in range(ticks+1)]
+        xticklabels = [int(j*dct['D']/ticks) for j in range(ticks+1)]
+        ax.set_xticks(xticks,xticklabels)
+        ax.set_yticks([-2,-1,0,1,2])
+        #ax.set_ylabel('$u_{n\ell}$')
+        ax.set_ylabel('$u_{30}(r/a_0)$')
+        ax.set_xlabel('$r/a_0$')
 
-    return (lambda x: u_spl(x)/sqrt(A))
+        for i in range(n):
+            c_i    = zeros(n)
+            c_i[i] = 1
+            spl_i  = BSpline(t,c_i,K,extrapolate=False)
+            ax.plot(xx,spl_i(xx),lw=1)
+
+        ax.plot(xx,u(xx),lw=4,c='k',label='Numerical')
+        ax.plot(xx,Exact['u20'](xx,dct['D']),lw=4,c='purple',ls='--',
+                label = 'Exact')
+        ax.scatter(t,[0 for i in t],c='k')
+        ax.legend(framealpha=0)
+        plt.show()
+        ###
+
+    return u
 
 def plot_radials(Atom,exact=False):
 
@@ -196,15 +228,21 @@ def plot_radials(Atom,exact=False):
             Atom['ell'] = ell[j]
             if not exact:
                 u = numsol(Atom)
-                axs[i].plot(xx,u(xx)**2/D[i],lw=2,label=r'$\ell = {}$'.format(ell[j]),ls=lss[j])
+                axs[i].plot(xx,u(xx)**2/D[i],lw=3,label=r'$\ell = {}$'.format(ell[j]),ls=lss[j])
             else:
                 name = 'u{}{}'.format(i,j)
                 axs[i].plot(xx,Exact[name](xx,Atom['D'])**2/D[i],
                             lw=2,label=r'$\ell = {}$'.format(ell[j]),ls=lss[j])
+
+            name = 'u{}{}'.format(i,j)
+            print(name)
+            q = argmax(u(xx))
+            print(abs(abs(u(xx[q]))-abs(Exact[name](xx[q],Atom['D']))))
+
         axs[i].legend(framealpha=0)
         axs[i].grid(linestyle='dotted',alpha=0.5)
 
-    axs[2].set_ylabel('$r^2 R_{n,\ell}^2$')
+    axs[2].set_ylabel('$u^2_{n,\ell}$')
     axs[2].set_xlabel('$r/a_0$')
     
     plt.show()
@@ -220,19 +258,19 @@ def u20_test(Atom):
 
     fig = plt.figure()
     ax  = fig.add_subplot(111)
-    ax.plot(xx,u(xx))
+    ax.plot(xx,u_exact)
     ax.scatter(xx[j],u_exact[j])
     plt.show()
 
     fig = plt.figure()
     ax  = fig.add_subplot(111)
     
-    markers = ['.','v','*','P','s']
-    colors  = ['k','r','b','purple','maroon']
+    markers = ['.','v','^','s']
+    colors  = ['b','r','purple','k']
 
-    Ns = [8*j for j in range(1,8)]
+    Ns = [j for j in range(2,60,4)]
+    quadDegs = [4,5,6]
 
-    quadDegs = [3,4,5,6,7]
     for i in range(len(quadDegs)):
         Atom['quadDeg'] = quadDegs[i]
         Y  = []
@@ -242,30 +280,37 @@ def u20_test(Atom):
             Y.append(abs(u(xx[j])-u_exact[j]))
 
         ax.scatter(Ns,Y,facecolor='none',edgecolor=colors[i],
-                   s=200,marker=markers[i],
-                   label='Quad. order = {}'.format(quadDegs[i]))
+                   s=400,lw=2,marker=markers[i],
+                   label='$d = {}$'.format(quadDegs[i]))
 
-    #Atom['quadDeg'] = 4
-    #quadNs = [20 for j in range(2,6)]
-    #for i in range(len(quadNs)):
-    #    Atom['quadN'] = quadNs[i]
-    #    Y  = []
-    #    for N in Ns:
-    #        Atom['N'] = N
-    #        u = numsol(Atom)
-    #        Y.append(abs(u(xx[j])-u_exact[j]))
-
-    #    ax.scatter(Ns,Y,facecolor='none',edgecolor=colors[i],
-    #               s=200,marker=markers[i])
-    
-
-    
     ax.set_xlabel('$N$')
     ax.set_ylabel('$|u_{20}(13a_0)-P_{20}(13a_0)|$')
     ax.set_yscale('log')
     ax.legend(framealpha=0)
+    ax.grid(ls='--',alpha=0.5)
     plt.show()
 
+    fig = plt.figure()
+    ax  = fig.add_subplot(111)
+    
+    for i in range(len(quadDegs)):
+        Atom['eigs'] = []
+        Atom['quadDeg'] = quadDegs[i]
+        for N in Ns:
+            Atom['N'] = N
+            u = numsol(Atom)
+        Y = array([abs(j/100+1/9) for j in Atom['eigs']])
+        ax.scatter(Ns,Y,
+                   facecolor='none',edgecolor=colors[i],
+                   marker=markers[i],s=400,lw=2,
+                   label='$d={}$'.format(quadDegs[i]))
+    
+    ax.legend(framealpha=0)
+    ax.set_xlabel('$N$')
+    ax.set_ylabel("Error $E'$")
+    ax.set_yscale('log')
+    ax.grid(ls='--',alpha=0.5)
+    plt.show()
     
 
 def convergence_test(Atom):
@@ -310,6 +355,177 @@ def plot_radial(Atom):
     plt.show()
 
     return 0
-    
+
+def spectrum():
+
+    ell = [0,0,0,0,
+           1,1,1,
+           2,2, 
+           3]
+    E   = [-66.67,-20.30,-9.66,-5.62,
+           -24.67,-11.00,-6.20,
+           -11.11,-6.25,
+           -6.25]
+    ell = array(ell)
+    E   = array(E)
+
+    fig = plt.figure()
+    ax  = fig.add_subplot(111)
+
+    for n in range(1,5):
+        ax.plot([min(ell),max(ell)],2*[1/n**2],ls='--',c='k'
+                ,lw=1.5,alpha=0.5)
+        if n != 1:
+            ax.text(x=2.5,y=1/(n-0.1)**2,s='$1/{}^2$'.format(n))
+            
+
+    ax.scatter(ell,-E/100,lw=4,s=500,c='k',marker='_')
+    ax.set_xticks([n for n in range(4)])
+    ax.set_xlabel(r"$\ell$")
+    ax.set_ylabel("$-E'$")
+    ax.set_yscale('log')
+    ax.grid(alpha=0.7,ls='--',which='both')
+
+    plt.show()
+
+def UniformShell_radials1(Atom):
+
+    dist = 1.5    # bohr radius
+    Atom['D'] = 40
+    Atom['ell'] = 0
+    fig = plt.figure()
+    ax  = fig.add_subplot(111)
+    xx = array([j/1000 for j in range(1001)])
+    rr = Atom['D']*xx
+    ax.set_ylabel('$u_{n0}^2$')
+    ax.set_xlabel('$r/a_0$')
+
+    Atom['E']  = -60
+    Atom['R0'] = dist/Atom['D']
+    u = numsol(Atom)
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,ls='--',c='purple')
+
+    Atom['E']  = -99
+    Atom['R0'] = 0
+    u = numsol(Atom)
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,c='k',
+            label='$V_C$')
+
+    Atom['E']  = -25
+    Atom['R0'] = dist/Atom['D']
+    u = numsol(Atom)
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,c='purple',ls='--',
+            label='$V_S$')
+
+    Atom['E']  = -25
+    Atom['R0'] = 0
+    u = numsol(Atom)
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,c='k')
+
+    Atom['E']  = -11
+    Atom['R0'] = dist/Atom['D']
+    u = numsol(Atom)
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,c='purple',ls='--')
+
+    Atom['E']  = -11
+    Atom['R0'] = 0
+    u = numsol(Atom)
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,c='k')
+
+    ax.text(x=2.8,y=0.4,s='$n=1$')
+    ax.text(x=8.8,y=0.19,s='$n=2$')
+    ax.text(x=22,y=0.12,s='$n=3$')
+    ax.set_yticks([0.0,0.5])
+
+    ax.plot([dist,dist],[0,0.5],
+            ls='dashdot',lw=3,c='k',
+            label='Sphere end')
+    ax.set_xscale('log')
+    ax.set_yticks([0.0,0.5])
+    ax.legend(framealpha=0,loc='upper left')
     
 
+    plt.show()
+
+
+def UniformShell_radials2(Atom):
+
+    dist = 1.5    # bohr radius
+    Atom['D']   = 60
+    Atom['ell'] = 1
+    fig = plt.figure()
+    ax  = fig.add_subplot(111)
+    xx = array([j/1000 for j in range(1001)])
+    rr = Atom['D']*xx
+    ax.set_ylabel('$u_{n1}^2$')
+    ax.set_xlabel('$r/a_0$')
+
+    Atom['E']  = -25
+    Atom['R0'] = dist/Atom['D']
+    u = numsol(Atom)
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,ls='--',c='purple')
+
+    Atom['E']  = -25
+    Atom['R0'] = 0
+    u = numsol(Atom)
+
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,c='k',
+            label='$V_C$')
+
+    Atom['E']  = -11
+    Atom['R0'] = dist/Atom['D']
+    u = numsol(Atom)
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,c='purple',ls='--',
+            label='$V_S$')
+
+    Atom['E']  = -11
+    Atom['R0'] = 0
+    u = numsol(Atom)
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,c='k')
+
+    Atom['E']  = -6
+    Atom['R0'] = dist/Atom['D']
+    u = numsol(Atom)
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,c='purple',ls='--')
+
+    Atom['E']  = -6
+    Atom['R0'] = 0
+    u = numsol(Atom)
+    ax.plot(rr,u(xx)**2/Atom['D'],lw=2,c='k')
+
+    ax.text(x=6,y=0.175,s='$n=2$')
+    ax.text(x=15,y=0.09,s='$n=3$')
+    ax.text(x=29,y=0.05,s='$n=4$')
+    ax.set_yticks([0.0,0.2])
+    
+    ax.plot([dist,dist],[0,0.2],
+            ls='dashdot',lw=3,c='k',
+            label='Sphere end')
+    ax.set_xscale('log')
+    ax.legend(framealpha=0,loc='upper left')
+
+    plt.show()
+
+def Uranium_test(Atom):
+
+    D = Atom['D']
+    Atom['R0'] = 1.618e-4/Atom['D']
+    Atom['R0'] = 0.01
+
+    fig = plt.figure()
+    ax  = fig.add_subplot(111)
+    xx = array([j/1000 for j in range(1001)])
+    
+    u = numsol(Atom)
+    uu = u(xx)
+    rr = D*xx
+
+    ax.plot(xx,u(xx),lw=3,c='k',alpha=0.7)
+    ax.set_ylabel('$u_{n,\ell}$')
+    ax.set_xlabel(r'$r/a_0$')
+
+    Atom['R0'] = 0
+    u = numsol(Atom)
+    ax.plot(xx,u(xx),lw=2,c='b',ls='--')
+
+    plt.show()

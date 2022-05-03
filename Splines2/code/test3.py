@@ -7,15 +7,14 @@ def main():
 
     Atom = {'Z'         : 1,     # Atomic number
             'ell'       : 0,     # Angular momentum
-            'E'         : -11,   # Guess at eigenvalue
-            'N'         : 30,    # Number of inner points
-            'D'         : 50,    # Scaling of interval
+            'E'         : -99,   # Guess at eigenvalue
+            'N'         : 31,    # Number of inner points
+            'D'         : 60,    # Scaling of interval
             'mass_ratio': 1,     # red. mass/mass of elect.
             'R0'        : 0.0,   # Uniform shell cut-off
             'quadN'     : 20,   # Quadrature nodes 
-            'quadDeg'   : 8}   # Quadrature nodes 
+            'quadDeg'   : 5}     # Quadrature degree 
 
-    #plot_radial(Atom)
     u20_test(Atom)
 
 main()
