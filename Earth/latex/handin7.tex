@@ -1,0 +1,43 @@
+\documentclass[twocolumn]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,physics,mathtools,blindtext,graphicx,float}
+\usepackage[a4paper,total={7.5in,10in}]{geometry}
+\usepackage[labelfont=bf]{caption}
+
+\begin{document}
+\begin{large}
+\begin{equation*}
+    \begin{split}
+        &T_i^\text{Vi,In} = T_{i+1}^\text{Vi,In}e^{-\sigma_\text{Vi}\rho_ih} \\ 
+        &T_i^\text{IR,In} = \left(T_{i+1}^\text{In,IR}+\frac{E_{i+1}}{2}\right)e^{-\sigma_\text{IR}\rho_ih} \\ 
+        &T_i^\text{Out} = \left(T_{i-1}^\text{Out}+\frac{E_{i-1}}{2}\right)e^{-\sigma_\text{IR}\rho_ih} \\ 
+        &E_i = \left(\frac{E_{i-1}+E_{i+1}}{2}+T^\text{Out}_{i-1}+T^\text{IR,In}\right)\left(1-e^{-\sigma_\text{IR}\rho_ih}\right) \\ 
+        &\hspace{5.2cm} + T_{i+1}^\text{Vi,In}\left(1-e^{-\sigma_\text{Vi}\rho_ih}\right)
+    \end{split}
+\end{equation*}
+Given an initial condition $T_N^\text{Vi,In}$, we can easily calculate all other $T_i^\text{Vi,In}$ if we know $\rho_i$. The other three equations can be written as 
+\begin{equation}
+    \begin{split}
+        &T_i^\text{IR,In} - g_iT_{i+1}^\text{IR,In}-\frac{g_i}{2}E_{i+1} = 0 \\ 
+        &T_i^\text{Out} - g_iT_{i-1}^\text{Out} - \frac{g_i}{2}E_{i-1} = 0\\ 
+        &E_i - \frac{1-g_i}{2}E_{i-1} - \frac{1-g_i}{2}E_{i+1} \\ 
+        &\hspace{0.4cm} - (1-g_i)T^\text{Out}_{i-1} - (1-g_i)T^\text{IR,In}_{i+1} = b_i
+    \end{split}
+\end{equation}
+where 
+\begin{equation}
+    \begin{split}
+        &g_i = e^{-\sigma_\text{IR}\rho_ih}, \\ 
+        &b_i = T_{i+1}^\text{Vi,In}\left(1-e^{-\sigma_\text{Vi}\rho_ih}\right).
+    \end{split}
+\end{equation}
+This system of equations can be solved given initial conditions $T^\text{IR,In}_N$, $T^\text{Out}_N$ and $E_N$ if $\rho_i$ is known.
+
+
+
+
+
+
+\end{large}
+\end{document}
