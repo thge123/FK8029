@@ -202,7 +202,8 @@ void US_STD_ATM(){
     for (int i=0; i<x.rows(); i++){
         T = x(i)/sigma;
         T = pow(T,0.25);
-        OutStream << z[i] << ";" << T << "\n";
+        OutStream << z[i] << ";" << T 
+                  << ";" << rho[i] << "\n";
     }
 
     OutStream.close();
@@ -238,7 +239,7 @@ void test(){
                       z[20] = 90000;
 
     T[0]  = 300;      
-    T[1]  = 49;      
+    T[1]  = 300;      
     T[2]  = 268;      
     T[3]  = 368;            
     T[4]  = 99;           
@@ -257,6 +258,8 @@ void test(){
     T[17] = 212;      
     T[18] = 300;        
     T[19] = 77;       
+
+    for (int i=0; i<20; i++) T[i] = 300;
                       
     
     // Number of layers
@@ -271,7 +274,7 @@ void test(){
     VectorXd eps(N+1);
     b = get_b(N);
 
-    for (int i=0; i<N; i++){
+    for (int i=0; i<N+1; i++){
         OutStream << z[i] << ";" << T[i] << "\n";
     }
     
@@ -279,7 +282,7 @@ void test(){
     double h,gh;
     rho[0] = 1.225;
 
-    for (int iters=0; iters<10; iters++){
+    for (int iters=0; iters<5; iters++){
 
     
     for (int i=1; i<N+1; i++){
@@ -305,7 +308,8 @@ void test(){
     for (int i=0; i<x.rows(); i++){
         T[i] = x(i)/sigma;
         T[i] = pow(T[i],0.25);
-        OutStream << z[i] << ";" << T[i] << "\n";
+        OutStream << z[i] << ";" << T[i]
+                  << ";" << rho[i] << "\n";
     }
     
     }

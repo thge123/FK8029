@@ -7,13 +7,20 @@
 
 \begin{document}
 \begin{large}
-\begin{center}
+
+\section*{Temperature of earth with idealized greenhouse model}
+\subsection*{Introduction}
+\begin{figure}[b!]
     \includegraphics[scale=0.5]{Layer1.png}
-\end{center}
+    \caption{}
+    \label{11maj1748}
+\end{figure}
+In this report, an idealized greenhouse model is considered. The averaged flux density of the incoming solar radiation over the surface of the earth is $S_0 = 341.5$ Wm$^{-2}$, of which about $30$\% is reflected back into space. The incoming radiation from the top of the atmosphere is thus $S = 0.7S_0 = 239.05$ Wm$^{-2}$. The atmosphere is to large extent transparent to this radiation and in this model it is assumed that all of this radiation reaches the surface of the earth. The surface of the earth, being much colder than the surface of the sun, emits radiation of much lower frequency back up into the atmosphere for which the atmosphere is much more opaque to.  The earth is also considered to be in thermal equlibrium with its surrounding so that the net energy flux through the atmosphere is zero. In this model, the atmosphere is assumed to be divided into different layers acting as grey bodies with emissivity and absorptivity $\epsilon$ which means that the total energy flux emitted from a layer is equal to $\epsilon\sigma T^4$ where $T$ is the temperature of the layer and $\sigma$ is the Stefan-Boltzmann constant. The value of $\epsilon$ lies between zero and one. These layers are also assumed to be in a thermal equilibrium so that the total energy flux into each one of them equals the total energy flux out of them. Balancing the incoming and outgoing flux through the layers gives a system of equations which van be solved to give the temperature in each layer. This was done numerically for a different number of layers and the results compared to measured data. 
 
-
-No net flux through layer 1 gives 
+\subsection*{One layer model}
+The model described above can be understood as a generalization of a one-layer model of the atmosphere depicted in figure \ref{11maj1748}. As mentioned above, the incoming radiation from the sun $S$ does not directly affect the atmosphere layer but the radiation from the earth does. The temperature and emissivity of the surface are $T_0$ and $\epsilon_0$, respectively, and the temperature and emissivity of the atmosphere are $T_1$ and $\epsilon_1$. Zero net flux through layer 1 gives 
 \begin{equation}
+    \label{11maj2007}
     \begin{split}
         0 &= 2\epsilon_1\sigma T_1^4 + (1-\epsilon_1)\sigma T_0^4 - \epsilon_0\sigma T_0^4 \\ 
         &= 2\epsilon_1\sigma T_1^4 - \epsilon_0\epsilon_1\sigma T_0^4
@@ -21,14 +28,17 @@ No net flux through layer 1 gives
 \end{equation}
 and zero net flux through the top of the atmosphere gives 
 \begin{equation}
-    (1-\epsilon_1)\epsilon_0\sigma T_0^4 + \epsilon_1\sigma T_1^4 = S
+    (1-\epsilon_1)\epsilon_0\sigma T_0^4 + \epsilon_1\sigma T_1^4 = S,
 \end{equation}
-where $S$ is the average flux density of the incoming solar radiation, $S=239.05$ Wm$^{-2}$. These two equations are linear in $\sigma T_0^4$ and $\sigma T_1^4$ and can be easily solved to give
+These two equations are linear in $\sigma T_0^4$ and $\sigma T_1^4$ and can be easily solved to give a surface temperature of 
 \begin{equation}
-    ...
+    \label{11maj2008}
+    T_0 = \left(\frac{S}{\sigma(1-\epsilon_0\epsilon_1/2)}\right)^{1/4}.
 \end{equation}
+The surface of the earth can be approximated to be a black body, i.e. $\epsilon_0=1$, but it is less clear what a reasonable value of $\epsilon_1$ is. A more 
 
-This model can be generalized by adding more layers. For $N$ layers, the temperatures in the different layers $T_i$ will be given by the solution to the $N+1$ dimensional linear system of equations
+\subsection*{Multi-layer model}
+The one-layer model can be generalized by adding more layers. For $N$ layers, the temperatures in the different layers $T_i$ will be given by the solution to the $N+1$ dimensional linear system of equations
 \begin{equation}
     A\mathbf{x} = \mathbf{b}
 \end{equation}
@@ -66,23 +76,25 @@ The equation for zero net flux through layer $i$ is then
 \end{equation}
 The vector $\mathbf{b}$ is thus given by $\mathbf{b} = (S,0,0,\dots,0)$. Having set up the matrix $A$ and vector $\mathbf{b}$, we could solve for the temperatures in each layer. However, the emissivities can depend on various physical variables such as temperature, density and wavelength of the radiation. Here, it will be assumed that the emissivities $\epsilon_j$ only depend on the densities of the layers $\rho_j$ and their thickness $h_j$ by the following relationship:
 \begin{equation}
+    \label{11maj1708}
     \epsilon_j = \alpha\rho_jh_j.
 \end{equation}
-where $\alpha$ is a constant such that $0\leq\epsilon_j\leq 1$. This however entails a complication because of the fact that the density of air depends on its temperature, which is the variable we are trying to solve for. How this is solved is explained later. 
-
-The density of layer $j$ can be calculated from the ideal gas law and Boltzmann statistics:
+where $\alpha$ is a constant such that $0\leq\epsilon_j\leq 1$. The density of layer $j$ can be calculated from the ideal gas law and Boltzmann statistics:
 \begin{equation}
+    \label{11maj1959}
     \begin{split}
         &P_j = \rho_jk_BT_j/m \\ 
         &P_j = P_{j-1}e^{-mgh_{j-1}/k_BT_{j-1}}.
     \end{split}
 \end{equation}
-Here $P_j$ is the pressure in layer $j$, $k_B$ is the Boltzmann constant and $m$ is the average mass of an air molecule, $m=4.8\cdot 10^{-26}$ kg. If we know $P_0$ and the temperature in each layer, we can calculate the density in each layer recursively with:
+Here $P_j$ is the pressure in layer $j$, $k_B$ is the Boltzmann constant and $m$ is the average mass of an air molecule, $m=4.8\cdot 10^{-26}$ kg. Assuming a density dependence of the emissivity entails a complication however, because the density of air depends on its temperature, which is the variable we are trying to solve for. How this was solved is explained later. Assuming that we know $P_0$ and the temperature in each layer, we can calculate the density in each layer recursively with:
 \begin{equation}
-    \rho_j = \frac{mP_{j-1}}{k_BT_j}e^{-mgh_{j-1}/k_BT_{j-1}}.
+    \label{11maj1707}
+    \rho_j = \frac{mP_{j-1}}{k_BT_j}e^{-mgh_{j-1}/k_BT_{j-1}},\quad j>0.
 \end{equation}
-The pressure and density at the surface are assumed to be $P_0=101.3$ kPa and $\rho_0=1.225$ kg/m$^3$, respectively.
+This follows from equation \eqref{11maj1959}. The pressure and density at the surface are assumed to be $P_0=101.3$ kPa and $\rho_0=1.225$ kg/m$^3$, respectively.
 
+Because of the temperature dependence of the emissivities, the system of equations becomes non-linear. Hence, it was solved iteratively until it became self-consistent with the following scheme. Some initial temperatures were chosen $T_j^{(0)}$ and the densities $\rho_j^{(0)}$ were found from them using equation \eqref{11maj1707}. Then, using these densities, the emissivities $\epsilon_j^{(0)}$ were found with equation \eqref{11maj1708}. New temperatures $T_j^{(1)}$ were then obtained as the solution to the linear system of equations $A(\mathbf{x}^{(0)})\mathbf{x}^{(1)} = \mathbf{b}$ where $A(\mathbf{x}^{(0)})$ is the matrix given above in which the emissivities $\epsilon_j^{(0)}$ were used. Then from the new temperatures, it was possible to obtain new densities $\rho_j^{(1)}$ and emissivites $\epsilon_j^{(1)}$. This was repeated until $|T_j^{(k)} -  T_{j}^{(k+1)}|$ became sufficiently small.
 %The parameters of this model are the number of layers, $N$, and the emissivity of each layer $\epsilon_i$. The emissivities can depend on various physical variables such as temperature, density and wavelength of the radiation. If it is temperature dependent, the system of equations becomes non-linear.
 
 \subsection*{Results}
@@ -93,7 +105,30 @@ The pressure and density at the surface are assumed to be $P_0=101.3$ kPa and $\
     \caption{The surface temperature $T_0$ and the temperature in the layer $T_1$, as a function of the emissivity of that layer $\epsilon_1$.}
     \label{9maj1827}
 \end{figure}
-The method was tested for one layer and different emissivities, $\epsilon_1$, of that layer. The surface of the earth had emissivity $\epsilon_0=1$. The result can be seen in figure \ref{9maj1827}. The span of the surface temperature for different emissivities is $255-303$ K which at least contains the estimate for the surface temperature from measured data, $287.2$ K. The temperature in the layer, $T_1$, is roughly $40-50$ K lower than $T_0$. This seemed to be a general characteristic of this model, i.e. that the higher layers always had lower temperature than the layers below. 
+To begin with, the method was tested for one layer for which the solution is known analytically (eqs. \eqref{11maj2007}$-$\eqref{11maj2008}). The surface of the earth had emissivity $\epsilon_0=1$ and the emissivity of the atmosphere was varied between zero and one. The result can be seen in figure \ref{9maj1827}. The span of the surface temperature for different emissivities is $255-303$ K which at least contains the estimate for the surface temperature from measured data, $287.2$ K. The temperature in the layer, $T_1$, is roughly $40-50$ K lower than $T_0$. This seemed to be a general characteristic of this model, i.e. that the higher layers always had lower temperature than the layers below. 
+\begin{figure}[!t]
+    \begin{center}
+        \includegraphics[scale=0.35]{Iteration.png}
+    \end{center}
+    \caption{The temperature as a function of iteration number when solving the system of equations for the multi-layer atmosphere model.}
+    \label{9maj2056}
+\end{figure}
+
+Having tested the model for one layer, it was used on a multi-layer atmosphere where the emissivities depend on the densities according to equation \eqref{11maj1707}. Ten layers were placed between $z=0$ m and $z=10000$ m with $1000$ m spacing. Then four layers were placed between $z=10000$ m and $z=30000$ m with $5000$ m spacings. Lastly, six layers were placed between $z=30000$ and $z=90000$ with $z=10000$ m spacings. Hence, the model atmosphere extended to $z=90000$ m and was composed of twenty layers. The starting temperature for the iteration was $T_j^{(0)}=300$ K for all layers $j$. The temperature in each layer as a function of iteration number can be seen in figure \ref{9maj2056}. The temperatures converge rather quickly. The converged values of the temperatures as a function of alititude $z$ can be seen in figure \ref{9maj2055}. A similar plot for the density can be seen in figure \ref{9maj2054}. 
+
+As a reference, the temperatures and densities from the US standard atmosphere model from 1976 is also plotted. 
+\begin{figure}[!t]
+    \begin{center}
+        \includegraphics[scale=0.35]{Temperature.png}
+    \end{center}
+    \caption{The temperature as a function of altitude obtained with the multi-layer model of the atmosphere. The values according to the US standard atmosphere model is plotted for comparison.}
+    \label{9maj2055}
+    \begin{center}
+        \includegraphics[scale=0.35]{Density.png}
+    \end{center}
+    \caption{The temperature as a function of altitude obtained with the multi-layer model of the atmosphere. The values according to the US standard atmosphere model is plotted for comparison.}
+    \label{9maj2054}
+\end{figure}
 
 
 
