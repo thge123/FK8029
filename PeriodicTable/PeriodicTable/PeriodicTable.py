@@ -370,7 +370,7 @@ def Neon():
     orb1 = {'Z'         : 10,    # Atomic number
             'ell'       : 0,     # Angular momentum
             'E'         : 0,   # Guess at eigenvalue
-            'N'         : 50,    # Number of inner points
+            'N'         : 25,    # Number of inner points
             'D'         : 25,    # Scaling of interval
             'mass_ratio': 1,     # red. mass/mass of elect.
             'R0'        : 0.0,   # Uniform shell cut-off
@@ -401,12 +401,16 @@ def Neon():
         g = numsol_Poisson(Poisson,PlotSplines=False)
         Lam = lambda x: g(x)-10*x/orb1['D']
         phi = lambda x: Lam(x)/x
-        Phi = lambda x: 0.55*phi(x) + 0.45*oldphi(x)
+        #Phi = lambda x: 0.55*phi(x) + 0.45*oldphi(x)
         exch = lambda x: 3*(3/(32*pi**2)*(-sigma(x)))**0.33
-        pot = lambda x: (+orb1['Z']/x
-                        - phi(x) + exch(x))
+        pot = lambda x: (-orb1['Z']/x
+                        - phi(x) - exch(x))
         oldphi = lambda x: Phi(x)
-        #plt.plot(rr,pot(rr),lw=2,c='k')
+        plt.plot(rr,pot(rr),lw=2,c='k',label='Total')
+        plt.plot(rr,-orb1['Z']/rr,lw=2,c='b',ls='--',label='Coulomb')
+        plt.xlabel('$r/a_0$')
+        plt.ylabel('$V$/Hartrees')
+        plt.legend()
         #plt.plot(rr,orb1['Z']/rr,lw=2,c='b',ls='--')
         #plt.show()
         orb1['pot'] = pot
