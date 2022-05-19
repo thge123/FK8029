@@ -1,0 +1,62 @@
+\documentclass[twocolumn]{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,physics,mathtools,blindtext,graphicx,float}
+\usepackage[a4paper,total={7.5in,10in}]{geometry}
+\usepackage[labelfont=bf]{caption}
+
+\begin{document}
+\begin{large}
+
+\section*{TOV}
+\begin{equation}
+    \begin{split}
+        &\frac{\text{d}P}{\text{d}r} = -\frac{G\left[P+\mathcal{E}(r)\right]\left[M(r)+4\pi r^3P/c^2\right]}{c^2r^2[1-2GM(r)/(c^2r)]} \\ 
+        &\frac{\text{d}M}{\text{d}r} = 4\pi r^2\frac{\mathcal{E}(r)}{c^2}
+    \end{split}
+\end{equation}
+An interpretation of these equations can be more readily seen by multiplying the first equation by $4\pi r^2\mathcal{E}\text{d}r/c^2 = \text{d}M$ and cancelling $\mathcal{E}$ on both sides:
+\begin{equation}
+    \begin{split}
+        4\pi r^2\text{d}P &= -\frac{GM\text{d}M}{r^2}\left(1+\frac{P}{\mathcal{E}(r)}\right)\left(1+\frac{4\pi r^3P}{Mc^2}\right) \\ 
+        &\hspace{2cm}\times\left(1-\frac{2GM}{c^2r^2}\right)^{-1}
+    \end{split}
+\end{equation}
+The term on the left hand side is the force exerted on a infinitesimal shell at radius $r$. The first factor on the right hand side is the newtonian gravitational force from the interior acting on this shell.
+
+\subsection*{Numerical set-up}
+Making the substitutions $r = R_0x$, $P=P_0p$, $\mathcal{E} = P_0\varepsilon$ and $M = M_0m$, we can write 
+\begin{equation}
+    \begin{split}
+        &\left(\frac{P_0}{R_0}\right)\frac{\text{d}p}{\text{d}x} = \\ 
+        &\hspace{-0cm} -\left(\frac{GP_0M_0}{c^2R_0^2}\right)\frac{\left[p+(\mathcal{E}_0/P_0)\varepsilon\right]\left[m+4\pi R_0^3x^3P_0p/c^2\right]}{x^2\left[1-2GM_0m/(c^2R_0x)\right]}
+    \end{split}
+\end{equation}
+and thus
+\begin{equation}
+    \frac{\text{d}p}{\text{d}x} = -\left(\frac{G_0M_0}{c^2R_0}\right)\frac{\left[p+(\mathcal{E}_0/P_0)\varepsilon\right]\left[m+4\pi R_0^3x^3P_0p/c^2\right]}{x^2\left[1-2GM_0m/(c^2R_0x)\right]}
+\end{equation}
+Now, we set 
+\begin{equation}
+    1 = \frac{\mathcal{E}_0}{P_0} = \frac{GM_0}{c^2R_0} = \frac{4\pi R_0^3P_0}{c^2}
+\end{equation}
+and find 
+\begin{equation}
+    \begin{split}
+        &\frac{\text{d}p}{\text{d}x} = -\frac{(\varepsilon+p)(m+x^3p)}{x(x-2m)} \\  %= f(p,\epsilon,m;x) \\ 
+        &\frac{\text{d}m}{\text{d}x} = x^2\varepsilon %= g(\epsilon;x)
+    \end{split}
+\end{equation}
+The initial value for the first equation can either be $p(0) = p_0$ or $p(x_0) = 0$ where $p_0$ is the pressure at the center and $x_0$ is the radius of the star. The initial value for the second equation is $m(0)=0$. We wish to solve this equation with a given equation of state $\epsilon(p)$.
+
+\subsection*{Notes}
+\begin{itemize}
+    \item Compare with Newton
+    \item Also do white dwarfs
+\end{itemize}
+
+
+
+
+\end{large}
+\end{document}
