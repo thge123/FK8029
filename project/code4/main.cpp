@@ -7,7 +7,6 @@ using namespace std;
 struct Star{
 
     double h;   // Step size
-    double b;   // End of bisection interval
     double pc;  // Central pressure
 
 };
@@ -62,22 +61,17 @@ double bisection(double (*f)(double x),
     return c;
 }
 
-double EOS(double p, double b, int *FLAG){
+double EOS(double p){
 
-    /* a = start of interval 
-     * b = end of interval */
-
-    double a=0;
-    double n = bisection(P,a,b,FLAG,p);
-    return E(n);
+    return 1;
 }
 
 
 void TOV_Heun(Star *star){
 
-    ofstream pmStream;
-    pmStream.open("pm.dat");
-    pmStream.precision(16);
+    ofstream GRpm;
+    GRpm.open("GRpm.dat");
+    GRpm.precision(16);
 
     double max_iters = 1000000;
     double iters = 0;
@@ -86,23 +80,17 @@ void TOV_Heun(Star *star){
     double m1,m2;
     double E1,E2;
     double h = star -> h;
-    double b = star -> b;
-    int FLAG=0;
 
     x1 = 1e-8;
     x2 = x1+h;
     p1 = star -> pc;
-    E1 = EOS(p1,b,&FLAG);
+    E1 = EOS(p1);
     m1 = E1*x1*x1*x1/3;
 
-    pmStream << x1 << ";"
-             << p1 << ";"
-             << m1 << ";"
-             << E1 << "\n";
-    //cout     << x1 << ";"
-    //         << p1 << ";"
-    //         << m1 << ";"
-    //         << E1 << "\n";
+    GRpm << x1 << ";"
+         << p1 << ";"
+         << m1 << ";"
+         << E1 << "\n";
 
     double f1,f2;
     double f3,f4;
@@ -112,7 +100,7 @@ void TOV_Heun(Star *star){
         f1 = -(m1+x1*x1*x1*p1);
         f1*= (E1+p1)/(x1*(x1-2*m1));
         p2 = p1 + h*f1;
-        E2 = EOS(p2,b,&FLAG);
+        E2 = EOS(p1);
 
         f2 = x1*x1*E1;
         m2 = m1 + h*f2;
@@ -120,20 +108,16 @@ void TOV_Heun(Star *star){
         f3 = -(m2+x2*x2*x2*p2);
         f3*= (E2+p2)/(x2*(x2-2*m2));
         p2 = p1 + h*(f1+f3)/2;
-        E2 = EOS(p2,b,&FLAG);
+        E2 = EOS(p2);
         
         f4 = x2*x2*E2;
         m2 = m1 + h*(f2+f4)/2;
 
         // Write to file
-        pmStream << x2 << ";"
-                 << p2 << ";"
-                 << m2 << ";"
-                 << E2 << "\n";
-
-        if (FLAG == 1){
-            break;
-        }
+        GRpm << x2 << ";"
+             << p2 << ";"
+             << m2 << ";"
+             << E2 << "\n";
 
         // Rename variables
         p1 = p2;
@@ -144,61 +128,51 @@ void TOV_Heun(Star *star){
         iters++; 
     }
 
-    pmStream.close();
+    GRpm.close();
     
     // Append last point (pc,x,m) to xm file
-    fstream xmStream;
-    xmStream.precision(16);
-    xmStream.open("xm.dat",ios::app);
-    xmStream << star -> pc << ";" 
-             << x1 << ";" 
-             << m1 << endl;
+    fstream GRxm;
+    GRxm.precision(16);
+    GRxm.open("GRxm.dat",ios::app);
+    GRxm << star -> pc << ";" 
+         << x1 << ";" 
+         << m1 << endl;
     
-    xmStream.close();
+    GRxm.close();
     
 }
 
 int main(){
 
     Star star;
+
     cout << "Write step interval: ";
     cin  >> star.h;
-    cout << "Write end for bisection interval: ";
-    cin  >> star.b;
     
     double N;
-    double pc_1;
-    double pc_2;
+    double pc1;
+    double pc2;
+
     cout << "Write N: ";
     cin  >> N;
-    cout << "Write pc1: ";
-    cin  >> pc_1;
-    cout << "Write pc2: ";
-    cin  >> pc_2;
-    for (int i=0; i<N-1; i++){
-        star.pc = pc_1 + i*(pc_2-pc_1)/(N-1);
+    cout << "Write starting pressure: ";
+    cin  >> pc1;
+    pc2 = pc1;
+    
+    if (N>1){
+        cout << "Write end pressure: ";
+        cin  >> pc2;
+        for (int i=0; i<N; i++){
+            star.pc = pc1 + i*(pc2-pc1)/(N-1);
+            cout << star.pc << endl;
+            TOV_Heun(&star);
+        }
+    } else{
+        star.pc = pc1;
         cout << star.pc << endl;
         TOV_Heun(&star);
     }
-
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    

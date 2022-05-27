@@ -28,7 +28,7 @@ def main():
 
     fig_E = plt.figure()
     ax_E  = fig_E.add_subplot(111)
-    ax_E.scatter(E,p,s=0.01,c='k')
+    ax_E.scatter(p,E,s=1,c='k')
     ax_E.set_xlabel('$p$')
     ax_E.set_ylabel('$\epsilon$')
 
@@ -48,7 +48,7 @@ def MR():
         m.append(i[2])
         print(i)
 
-    pc = [j*1.285 for j in pc]  # GeV/fm^3
+    pc = [j*0.11239 for j in pc]  # GeV/fm^3
     m =  [j*4.63  for j in m]   # Solar masses
     x0 = [j*6.84  for j in x0]  # km
 
@@ -176,6 +176,6 @@ def MRP2():
     plt.show()
 
     
-main()
+MRP2()
 
 

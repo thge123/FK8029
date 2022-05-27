@@ -14,7 +14,7 @@ struct Star{
 
 double P(double n){
 
-    double a = 2.10019e-1;
+    double a = 3.8616e-1;
     double xF = a*pow(3*M_PI*M_PI*n,0.3333);
     double yF = sqrt(1+xF*xF);
     double p = 2*xF*xF*xF*yF/3;
@@ -25,7 +25,7 @@ double P(double n){
 
 double E(double n){
 
-    double a = 2.10019e-1;
+    double a = 3.8616e-1;
     double xF = a*pow(3*M_PI*M_PI*n,0.3333);
     double yF = sqrt(1+xF*xF);
     double e  = xF*yF;
@@ -142,6 +142,10 @@ void TOV_Heun(Star *star){
         x1 = x2;
         x2 = x2+h;
         iters++; 
+        //cout << x2 << ";" 
+        //     << p2 << ";"
+        //     << m2 << ";"
+        //     << E2 << ";" << endl;
     }
 
     pmStream.close();

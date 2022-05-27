@@ -14,7 +14,7 @@ struct Star{
 
 double P(double n){
 
-    double a = 2.10019e-1;
+    double a = 2.1002e-1;
     double xF = a*pow(3*M_PI*M_PI*n,0.3333);
     double yF = sqrt(1+xF*xF);
     double p = 2*xF*xF*xF*yF/3;
@@ -25,7 +25,7 @@ double P(double n){
 
 double E(double n){
 
-    double a = 2.10019e-1;
+    double a = 2.1002e-1;
     double xF = a*pow(3*M_PI*M_PI*n,0.3333);
     double yF = sqrt(1+xF*xF);
     double e  = xF*yF;
@@ -48,6 +48,11 @@ double bisection(double (*f)(double x),
         fc = f(c)-shift;
         fa = f(a)-shift;
         if (fc*fc < TOL*TOL){
+            //cout << "Bisection returned " 
+            //     << c << " with error "
+            //     << sqrt(fc*fc) 
+            //     << " (" << *FLAG 
+            //     << ")" << endl;
             return c;
         }
         else{
@@ -59,13 +64,15 @@ double bisection(double (*f)(double x),
         iters ++;
     }
     *FLAG = 1;
+    //cout << "Bissection returned " 
+    //     << c << " with error "
+    //     << sqrt(fc*fc) 
+    //     << " (" << *FLAG 
+    //     << ")" << endl;
     return c;
 }
 
 double EOS(double p, double b, int *FLAG){
-
-    /* a = start of interval 
-     * b = end of interval */
 
     double a=0;
     double n = bisection(P,a,b,FLAG,p);
@@ -73,11 +80,11 @@ double EOS(double p, double b, int *FLAG){
 }
 
 
-void TOV_Heun(Star *star){
+void Newt_Heun(Star *star){
 
     ofstream pmStream;
-    pmStream.open("pm.dat");
-    pmStream.precision(16);
+    pmStream.open("pm_Newt.dat");
+    pmStream.precision(12);
 
     double max_iters = 1000000;
     double iters = 0;
@@ -109,16 +116,16 @@ void TOV_Heun(Star *star){
     while (p1 > 0 && iters<max_iters){
 
         // Heun's method
-        f1 = -(m1+x1*x1*x1*p1);
-        f1*= (E1+p1)/(x1*(x1-2*m1));
+        f1 = -m1;
+        f1*= E1/(x1*x1);
         p2 = p1 + h*f1;
         E2 = EOS(p2,b,&FLAG);
 
         f2 = x1*x1*E1;
         m2 = m1 + h*f2;
 
-        f3 = -(m2+x2*x2*x2*p2);
-        f3*= (E2+p2)/(x2*(x2-2*m2));
+        f3 = -m2;
+        f3*= E2/(x2*x2);
         p2 = p1 + h*(f1+f3)/2;
         E2 = EOS(p2,b,&FLAG);
         
@@ -142,14 +149,18 @@ void TOV_Heun(Star *star){
         x1 = x2;
         x2 = x2+h;
         iters++; 
+        //cout << x2 << ";" 
+        //     << p2 << ";"
+        //     << m2 << ";"
+        //     << E2 << ";" << endl;
     }
 
     pmStream.close();
     
     // Append last point (pc,x,m) to xm file
     fstream xmStream;
-    xmStream.precision(16);
-    xmStream.open("xm.dat",ios::app);
+    xmStream.precision(12);
+    xmStream.open("xm_Newt.dat",ios::app);
     xmStream << star -> pc << ";" 
              << x1 << ";" 
              << m1 << endl;
@@ -178,27 +189,6 @@ int main(){
     for (int i=0; i<N-1; i++){
         star.pc = pc_1 + i*(pc_2-pc_1)/(N-1);
         cout << star.pc << endl;
-        TOV_Heun(&star);
+        Newt_Heun(&star);
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
