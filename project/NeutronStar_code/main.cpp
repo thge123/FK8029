@@ -12,10 +12,8 @@ struct Star{
 
 };
 
-double P(double n){
+double P(double xF){
 
-    double a = 3.8616e-1;
-    double xF = a*pow(3*M_PI*M_PI*n,0.3333);
     double yF = sqrt(1+xF*xF);
     double p = 2*xF*xF*xF*yF/3;
     p-= xF*yF;
@@ -23,10 +21,8 @@ double P(double n){
     return p;
 }
 
-double E(double n){
+double E(double xF){
 
-    double a = 3.8616e-1;
-    double xF = a*pow(3*M_PI*M_PI*n,0.3333);
     double yF = sqrt(1+xF*xF);
     double e  = xF*yF;
     e*= (xF*xF+yF*yF);
@@ -64,20 +60,20 @@ double bisection(double (*f)(double x),
 
 double EOS(double p, double b, int *FLAG){
 
-    /* a = start of interval 
-     * b = end of interval */
-
     double a=0;
-    double n = bisection(P,a,b,FLAG,p);
-    return E(n);
+    if (p<0){
+        *FLAG=1;
+        return 0;
+    }
+    return E(bisection(P,a,b,FLAG,p));
 }
 
 
 void TOV_Heun(Star *star){
 
-    ofstream pmStream;
-    pmStream.open("pm.dat");
-    pmStream.precision(16);
+    ofstream GRpm;
+    GRpm.open("GRpm.dat");
+    GRpm.precision(16);
 
     double max_iters = 1000000;
     double iters = 0;
@@ -95,14 +91,10 @@ void TOV_Heun(Star *star){
     E1 = EOS(p1,b,&FLAG);
     m1 = E1*x1*x1*x1/3;
 
-    pmStream << x1 << ";"
-             << p1 << ";"
-             << m1 << ";"
-             << E1 << "\n";
-    //cout     << x1 << ";"
-    //         << p1 << ";"
-    //         << m1 << ";"
-    //         << E1 << "\n";
+    GRpm << x1 << ";"
+         << p1 << ";"
+         << m1 << ";"
+         << E1 << "\n";
 
     double f1,f2;
     double f3,f4;
@@ -126,14 +118,10 @@ void TOV_Heun(Star *star){
         m2 = m1 + h*(f2+f4)/2;
 
         // Write to file
-        pmStream << x2 << ";"
-                 << p2 << ";"
-                 << m2 << ";"
-                 << E2 << "\n";
-
-        if (FLAG == 1){
-            break;
-        }
+        GRpm << x2 << ";"
+             << p2 << ";"
+             << m2 << ";"
+             << E2 << "\n";
 
         // Rename variables
         p1 = p2;
@@ -142,23 +130,96 @@ void TOV_Heun(Star *star){
         x1 = x2;
         x2 = x2+h;
         iters++; 
-        //cout << x2 << ";" 
-        //     << p2 << ";"
-        //     << m2 << ";"
-        //     << E2 << ";" << endl;
     }
 
-    pmStream.close();
+    GRpm.close();
     
     // Append last point (pc,x,m) to xm file
-    fstream xmStream;
-    xmStream.precision(16);
-    xmStream.open("xm.dat",ios::app);
-    xmStream << star -> pc << ";" 
-             << x1 << ";" 
-             << m1 << endl;
+    fstream GRxm;
+    GRxm.precision(16);
+    GRxm.open("GRxm.dat",ios::app);
+    GRxm << star -> pc << ";" 
+         << x1 << ";" 
+         << m1 << endl;
     
-    xmStream.close();
+    GRxm.close();
+    
+}
+
+void NEWT_Heun(Star *star){
+
+    ofstream NEWTpm;
+    NEWTpm.open("NEWTpm.dat");
+    NEWTpm.precision(16);
+
+    double max_iters = 1000000;
+    double iters = 0;
+    double x1,x2;
+    double p1,p2;
+    double m1,m2;
+    double E1,E2;
+    double h = star -> h;
+    double b = star -> b;
+    int FLAG=0;
+
+    x1 = 1e-8;
+    x2 = x1+h;
+    p1 = star -> pc;
+    E1 = EOS(p1,b,&FLAG);
+    m1 = E1*x1*x1*x1/3;
+
+    NEWTpm << x1 << ";"
+           << p1 << ";"
+           << m1 << ";"
+           << E1 << "\n";
+
+    double f1,f2;
+    double f3,f4;
+    while (p1 > 0 && iters<max_iters){
+
+        // Heun's method
+        f1 = -m1;
+        f1*= E1/(x1*x1);
+        p2 = p1 + h*f1;
+        E2 = EOS(p2,b,&FLAG);
+
+        f2 = x1*x1*E1;
+        m2 = m1 + h*f2;
+
+        f3 = -m2;
+        f3*= E2/(x2*x2);
+        p2 = p1 + h*(f1+f3)/2;
+        E2 = EOS(p2,b,&FLAG);
+        
+        f4 = x2*x2*E2;
+        m2 = m1 + h*(f2+f4)/2;
+
+        // Write to file
+        NEWTpm << x2 << ";"
+               << p2 << ";"
+               << m2 << ";"
+               << E2 << "\n";
+
+        // Rename variables
+        p1 = p2;
+        m1 = m2;
+        E1 = E2;
+        x1 = x2;
+        x2 = x2+h;
+        iters++; 
+    }
+
+    NEWTpm.close();
+    
+    // Append last point (pc,x,m) to xm file
+    fstream NEWTxm;
+    NEWTxm.precision(16);
+    NEWTxm.open("NEWTxm.dat",ios::app);
+    NEWTxm << star -> pc << ";" 
+           << x1 << ";" 
+           << m1 << endl;
+    
+    NEWTxm.close();
     
 }
 
@@ -177,32 +238,26 @@ int main(){
     cin  >> N;
     cout << "Write pc1: ";
     cin  >> pc_1;
-    cout << "Write pc2: ";
-    cin  >> pc_2;
-    for (int i=0; i<N-1; i++){
-        star.pc = pc_1 + i*(pc_2-pc_1)/(N-1);
-        cout << star.pc << endl;
-        TOV_Heun(&star);
-    }
+    pc_2 = pc_1;
+    
+    if (N>1){
 
+        cout << "Write pc2: ";
+        cin  >> pc_2;
+        for (int i=0; i<N; i++){
+            star.pc = pc_1 + i*(pc_2-pc_1)/(N-1);
+            cout << star.pc << endl;
+            TOV_Heun(&star);
+            NEWT_Heun(&star);
+        }
+
+    } else{
+
+        star.pc = pc_1;
+        TOV_Heun(&star);
+        NEWT_Heun(&star);
+    }
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
