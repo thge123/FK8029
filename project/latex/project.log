@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.10.31)  27 MAY 2022 22:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.10.31)  28 MAY 2022 11:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -358,54 +358,50 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 1057) in paragraph at lines 154--156
+\OT1/cmr/m/n/12 Inserting these con-stants into the scaled TOV-
+ []
 
-LaTeX Warning: Reference `24maj2054' on page 2 undefined on input line 104.
-
-
-Overfull \hbox (2.64111pt too wide) detected at line 128
+[2]
+Overfull \hbox (2.64111pt too wide) detected at line 208
 []
  []
 
-<Newt.png, id=19, 693.792pt x 519.6213pt>
+<Newt.png, id=22, 693.792pt x 519.6213pt>
 File: Newt.png Graphic file (type png)
 <use Newt.png>
-Package pdftex.def Info: Newt.png  used on input line 142.
+Package pdftex.def Info: Newt.png  used on input line 222.
 (pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
-<TOV_limit.png, id=21, 693.792pt x 519.6213pt>
+<TOV_limit.png, id=24, 693.792pt x 519.6213pt>
 File: TOV_limit.png Graphic file (type png)
 <use TOV_limit.png>
-Package pdftex.def Info: TOV_limit.png  used on input line 145.
+Package pdftex.def Info: TOV_limit.png  used on input line 225.
 (pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
-[2 <./Newt.png> <./TOV_limit.png>] [3
-
-] (./project.aux)
-
-LaTeX Warning: There were undefined references.
-
- ) 
+[3 <./Newt.png> <./TOV_limit.png>] (./project.aux) ) 
 Here is how much of TeX's memory you used:
- 6270 strings out of 481239
- 95624 string characters out of 5920376
+ 6280 strings out of 481239
+ 95733 string characters out of 5920376
  378424 words of memory out of 5000000
- 21468 multiletter control sequences out of 15000+600000
- 538899 words of font info for 48 fonts, out of 8000000 for 9000
+ 21477 multiletter control sequences out of 15000+600000
+ 539246 words of font info for 49 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,19n,42p,714b,247s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
-blic/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
-2.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texm
-f/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on project.pdf (3 pages, 203192 bytes).
+ 43i,19n,42p,714b,251s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc
+/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmbxti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super
+/sfrm1200.pfb>
+Output written on project.pdf (3 pages, 210850 bytes).
 PDF statistics:
  76 PDF objects out of 1000 (max. 8388607)
  52 compressed objects within 1 object stream

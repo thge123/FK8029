@@ -57,16 +57,17 @@ def MRP2():
 
         pc = [j*8.874 for j in pc]  # meV/fm^3
         m =  [j  for j in m]   # Solar masses
-        x0 = [j*0.003897  for j in x0]  # solar radii
+        x0 = [j*2.711e3  for j in x0]  # km
 
         ax1.scatter(x0,m,s=1)
         ax2.scatter(pc,m,s=1)
 
     #ax2.legend(framealpha=0,loc='lower center')
-    ax1.set_xlabel(r'$R$ [R$_\odot$]')
+    ax1.set_xlabel(r'$R$ [km]')
     ax2.set_ylabel(r'$M$ [M$_\odot$]')
     ax2.set_xlabel(r'$P_c$ [meV/fm$^3$]')
     ax2.set_xscale('log')
+    ax1.set_xscale('log')
     plt.show()
 
     
