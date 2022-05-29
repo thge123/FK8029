@@ -45,8 +45,8 @@ def MRP2():
     fig2 = plt.figure()
     ax1  = fig1.add_subplot(111)
     ax2  = fig2.add_subplot(111)
-    labels = {'GRxm.dat': (500,1.46,5000,1.46,'Relativistic'),
-              'NEWTxm.dat': (500,1.3,5000,1.3,'Newtonian')}
+    labels = {'GRxm.dat': (500,1.3,5000,1.46,'Relativistic'),
+              'NEWTxm.dat': (500,1.46,5000,1.3,'Newtonian')}
 
     for filename in ['GRxm.dat','NEWTxm.dat']:
         X = get_data(filename)
