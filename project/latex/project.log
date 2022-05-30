@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.10.31)  29 MAY 2022 22:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.10.31)  30 MAY 2022 22:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -355,10 +355,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 17.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-Underfull \vbox (badness 1708) has occurred while \output is active []
-
- [1
+) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
 Underfull \hbox (badness 1057) in paragraph at lines 184--186
@@ -366,58 +363,63 @@ Underfull \hbox (badness 1057) in paragraph at lines 184--186
  []
 
 [3]
-Overfull \hbox (18.33209pt too wide) in paragraph at lines 271--279
- [][] 
- []
-
-
-LaTeX Warning: Reference `29maj0008' on page 4 undefined on input line 280.
-
-<WhiteDwarf_MR.png, id=26, 693.792pt x 519.6213pt>
+<WhiteDwarf_example.png, id=26, 693.792pt x 519.6213pt>
+File: WhiteDwarf_example.png Graphic file (type png)
+<use WhiteDwarf_example.png>
+Package pdftex.def Info: WhiteDwarf_example.png  used on input line 275.
+(pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
+<NeutronStar_example.png, id=28, 693.792pt x 519.6213pt>
+File: NeutronStar_example.png Graphic file (type png)
+<use NeutronStar_example.png>
+Package pdftex.def Info: NeutronStar_example.png  used on input line 276.
+(pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
+<WhiteDwarf_MR.png, id=29, 693.792pt x 519.6213pt>
 File: WhiteDwarf_MR.png Graphic file (type png)
 <use WhiteDwarf_MR.png>
-Package pdftex.def Info: WhiteDwarf_MR.png  used on input line 283.
+Package pdftex.def Info: WhiteDwarf_MR.png  used on input line 297.
 (pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
-<Neutron_MR.png, id=28, 693.792pt x 519.6213pt>
+<Neutron_MR.png, id=30, 693.792pt x 519.6213pt>
 File: Neutron_MR.png Graphic file (type png)
 <use Neutron_MR.png>
-Package pdftex.def Info: Neutron_MR.png  used on input line 284.
+Package pdftex.def Info: Neutron_MR.png  used on input line 298.
 (pdftex.def)             Requested size: 242.83083pt x 181.87018pt.
-[4 <./WhiteDwarf_MR.png> <./Neutron_MR.png>] (./project.aux)
 
-LaTeX Warning: There were undefined references.
+Underfull \vbox (badness 1127) has occurred while \output is active []
 
- ) 
+ [4 <./WhiteDwarf_example.png> <./NeutronStar_example.png>]
+Underfull \vbox (badness 3657) has occurred while \output is active []
+
+ [5 <./WhiteDwarf_MR.png> <./Neutron_MR.png>] (./project.aux) ) 
 Here is how much of TeX's memory you used:
- 6303 strings out of 481239
- 96082 string characters out of 5920376
- 379429 words of memory out of 5000000
- 21498 multiletter control sequences out of 15000+600000
+ 6316 strings out of 481239
+ 96401 string characters out of 5920376
+ 379445 words of memory out of 5000000
+ 21509 multiletter control sequences out of 15000+600000
  540954 words of font info for 57 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,19n,42p,792b,349s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/te
-xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on project.pdf (4 pages, 247519 bytes).
+ 43i,19n,42p,973b,383s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/tex
+live/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/symbols/msbm10.pfb>
+Output written on project.pdf (5 pages, 338621 bytes).
 PDF statistics:
- 98 PDF objects out of 1000 (max. 8388607)
- 68 compressed objects within 1 object stream
+ 101 PDF objects out of 1000 (max. 8388607)
+ 67 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

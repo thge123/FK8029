@@ -10,7 +10,7 @@
 
 \section*{TOV}
 \begin{normalsize}
-\textit{Abstract:} 
+\textit{Abstract:} The masses and radii of white dwarfs and neutron stars are calculated numerically using the condition of hydrostatic equilibrium. Relativistic effects (given by the Tolman-Oppenheimer-Volkoff equations) are taken into account and the result are compared to the newtonian case. 
 \end{normalsize}
 \subsection*{Introduction}
 
@@ -36,12 +36,12 @@ The TOV-equations are solutions to Einstein's field equation inside a static sph
 \end{equation}
 where $\mathcal{E} = \rho c^2$ is the energy density and $c$ is the vacuum speed of light. Notice that the equation for the mass $M$ is the same as in the newtonian equations given in \eqref{28maj1900} but the equation for pressure is non-linear because pressure is itself a source of gravity in general relativity which makes the equation more complicated.
 
-A comparison of these equations to the newtonian equations can be more readily made by multiplying the first equation by $4\pi r^2\mathcal{E}\text{d}r/c^2 = \text{d}M$ and cancelling $\mathcal{E}$ on both sides:
+A comparison between these equations and the newtonian equations can be more readily made by multiplying the first equation by $4\pi r^2\mathcal{E}\text{d}r/c^2 = \text{d}M$ and cancelling $\mathcal{E}$ on both sides:
 \begin{equation}
     \label{28maj1039}
     \begin{split}
-        4\pi r^2\text{d}P &= -\frac{GM\text{d}M}{r^2}\left(1+\frac{P}{\mathcal{E}(r)}\right)\left(1+\frac{4\pi r^3P}{Mc^2}\right) \\ 
-        &\hspace{2cm}\times\left(1-\frac{2GM}{c^2r^2}\right)^{-1}
+        4\pi r^2\text{d}P &= -\frac{GM\text{d}M}{r^2}\left(1+\frac{P}{\mathcal{E}}\right)\left(1+\frac{4\pi r^3P}{Mc^2}\right) \\ 
+        &\hspace{2cm}\times\left(1-\frac{2GM}{c^2r^2}\right)^{-1}.
     \end{split}
 \end{equation}
 The term on the left hand side is the force exerted on a infinitesimal shell between radii $r$ and $r+\text{d}r$. The first factor on the right hand side is the newtonian gravitational force from the interior acting on this shell. The other three factors are relativistic corrections which become important for dense and more massive stars. These factors all exceed unity which makes the gravitational force stronger and compresses the matter more compared to the newtonian case.
@@ -101,13 +101,13 @@ where the function $G$ is defined by:
     \label{28maj1450}
     \begin{split}
         &G(x_F) = \bigg[\frac{2}{3}x_F^3\sqrt{1+x_F^2}-x_F\sqrt{1+x_F^2} \\ 
-        &\hspace{2.90cm}+\ln\left(x_F+\sqrt{1+x_F^2}\right)\bigg] \\ 
+        &\hspace{2.90cm}+\ln\left(x_F+\sqrt{1+x_F^2}\right)\bigg]. 
     \end{split}
 \end{equation}
 Notice that the energy density and pressure differ by order of magnitude $\mathcal{E}/P\sim m_p/m_e\sim 10^3$. Now we know both $\mathcal{E}$ and $P$ as functions of $x_F$ (which in turn is a function of the number density $n$) but we don't have an explicit expression for the function $\mathcal{E}(P)$. Given a pressure $P=P_0$ we can however use a root finding algorithm to find the $x_F$ such that $P(x_F) - P_0 = 0$. Having found this value $x_F$, we can plug it into equation \eqref{28maj1110} for the energy density to find $\mathcal{E}(P_0)$. 
 
 \subsubsection*{\textit{Equation of state for a neutron star}}
-The model which will be used for a neutron star is somewhat simpler than the one for the white dwarf and the equation for the energy density and pressure will be the similar as the ones above. It will be assumed that the equation of state is that of a degenerate gas of non-interacting neutrons at zero temperature. Hence, the energy density will be the same as the one for the electrons in equation \eqref{28maj0910} but with the neutron mass $m_n$ instead of the electron mass:
+The model which will be used for a neutron star is somewhat simpler than the one for the white dwarf and the equation for the energy density and pressure will be similar to the ones above. It is assumed that the equation of state is that of a degenerate gas of non-interacting neutrons at zero temperature. Hence, the energy density will be the same as the one for the electrons in equation \eqref{28maj0910} but with the neutron mass $m_n$ instead of the electron mass:
 \begin{equation}
     \label{28maj1446}
     \mathcal{E} = \frac{(m_nc^2)^4}{8\pi^2(\hbar c)^3}F(y_F)
@@ -169,7 +169,7 @@ Since the relation between energy density and pressure differs between a white d
     &P_0 = \frac{(m_ec^2)^4}{(\hbar c)^3} = 8.874\text{ meV/fm}^3.
     \end{split}
 \end{equation}
-The length scale and mass scale are then chosen such that the multiplication of the first two factors in equation \eqref{28maj1116} for the pressure becomes
+The length and mass scales are then chosen such that the multiplication of the first two factors in equation \eqref{28maj1116} for the pressure becomes
 \begin{equation}
     \label{28maj1119}
     \left(\frac{GM_0}{c^2R_0}\right)\left(\frac{\mathcal{E}_0}{P_0}\right) = 1.
@@ -254,38 +254,75 @@ To solve the TOV-equations, initial conditions for both the pressure $p$ and mas
 %with $x_F(n)=\hbar c(3\pi n)^{1/3}/(mc^2)$. Hence, for a given $p=p_0$ we need a root finding algorithm to find $n=n_0$ such that $p(n_0) = p_0$. Once $n_0$ has been found, we can plug that into $\varepsilon$ to find $\varepsilon(n_0)=\varepsilon(p_0)$. 
 
 \subsubsection*{\textit{Numerical implementation}}
-The TOV-equations and equation of states for the white dwarfs and the neutron stars differ somewhat but the general strategy to solve the equations is the same. Below is an outline of how this was done.
+The TOV-equations and equations of state for the white dwarfs and the neutron stars differ somewhat but the general strategy to solve them was the same. Below is an outline of how this was done:
 %Having set up the equations which are to be integrated \eqref{28maj1427} \eqref{24maj1640} and the equation of state \eqref{24maj1641}, the following steps were taken to solve the TOV-equations: 
 
 \begin{itemize}
     \item[1.] Set the initial conditions by specifying $p(0) = p_{j=0}$ and set $m(0) = 0 = m_{j=0}$. Find $p(\Delta x)=p_1$ and $m(\Delta x)=m_1$ by appropriate series expansions where $\Delta x$ is close to zero.
     \item[2.] Find the energy density by using the bisection method on $p(x) - p_j = 0$ and plugging $x$ into the equation for the energy density to get $\epsilon(x)=\varepsilon_j$. 
     \item[3.] Use Heun's integration method on the TOV equations to obtain $p_{j+1}$ and $m_{j+1}$. 
-    \item[4.] Repeat from 2. until the pressure goes below zero, i.e. $p_{j+1}<0$.
+    \item[4.] Repeat from 2. until the pressure goes below zero, i.e. $p_{j+1}<0$. At that point, the end of the star has been reached.
 \end{itemize}
+This was repeated for many different central pressures to obtain a mass-radius relationship.
 
 %The step size used was $h=10^{-4}$ and the tolerance for the bisection method was $\Delta = 10^{-8}$. 
-\subsection*{Results}
-\begin{table}[b]
+\subsection*{Results and discussion}
+The following results were obtained by using the strategy described above with step size $h=10^{-4}$ and nuclei per electron ratio $Y=2$ for the white dwarf.
+
+The pressure $P$ and the mass function $M$ are plotted as a function of radial coordinate $r$ in figure \ref{29maj0007} for both a white dwarf and a neutron star. The central pressures which were used, approximately $20$ eV/fm$^3$ for the white dwarf and $0.26$ GeV/fm$^3$ for the neutron star, are the ones which maximized the mass of the stars by using the TOV-equations. The whole blue lines are the results from the TOV-equations and the dashed orange lines are the results from Newton's equations. The difference between these results for a white dwarf are barely visible where the difference in the mass of the star is approximately $0.02$ M$_\odot$ (about 1\% difference) and its radius approximately $3$ km (about 0.3\% difference). The difference becomes more apparent for a neutron star however, where the difference in the mass of the star is $0.62$ M$_\odot$ (about 60 \% difference) and $2$  km in its radius (about 20 \% difference). 
+\begin{figure}[!t]
+    \begin{center}
+        \includegraphics[scale=0.35]{WhiteDwarf_example.png}
+        \includegraphics[scale=0.35]{NeutronStar_example.png}
+    \end{center}
+    \caption{The pressure $P$ and mass function $M$ as a function of radial coordinate $r$ obtained for a specific central pressure. The plot at the top is for a white dwarf and the plot at the bottom is for a neutron star. The curves corresponding to pressure are the ones which end at zero pressure. The full blue lines are the results of a relativistic treatment of hydrostatic equilibrium while the dashed orange curves are obtained from the corresponding newtonian treatment.}
+    \label{29maj0007}
+\end{figure}
+\begin{table}[!b]
 \centering
-\begin{tabular}{c c c c c}
-    Star & $M_\text{max}$ [M$_\odot$] & $R$ [km] & $P_C$ [eV/fm$^3$] & Theory \\ 
-    \hline\hline
-    White dwarf  & 1.416 & 720  & $\approx 14$           & Newton \\ 
-    White dwarf  & 1.396 & 1020 & $\approx 3$            & GR \\ 
-    Neutron star & 1.648 & 7.2  & $\approx 4\cdot 10^9$  &Newton \\ 
-    Neutron star & 0.710 & 9.0  & $\approx 2\cdot 10^8$  & GR \\ 
-\end{tabular}
+    \begin{tabular}{c c c c}
+        Star & $M_\text{max}$ [M$_\odot$] & $R$ [km] & Equations \\ 
+        \hline\hline
+        White dwarf  & 1.416 & 720  & Newton's \\ 
+        White dwarf  & 1.396 & 1020 & TOV \\ 
+        Neutron star & 1.648 & 7.2  & Newton's \\ 
+        Neutron star & 0.710 & 9.0  & TOV \\ 
+    \end{tabular}
+    \caption{The maximum masses of the stars obtained by either the TOV-equations or Newton's equations. The radius of this maximum mass star is also included.}
+    \label{30maj2217}
 \end{table}
-The results for the white dwarf can be seen in figure \ref{29maj0007}. The first plot displays the mass radius relationship for both the relativistic and newtonian treatments while the second figure displays the mass as a function of pressure at the center of the star in a similar way. Similar plots for the neutron star can be seen in figure \ref{29maj0008}.
+
 \begin{figure}[!t]
     \begin{center}
         \includegraphics[scale=0.35]{WhiteDwarf_MR.png}
         \includegraphics[scale=0.35]{Neutron_MR.png}
     \end{center}
-    \caption{The mass-radius relationship for a white dwarf (top) and the mass as a function of pressure in the center of the star (bottom). The difference between the maximum mass between the newtonian and relativistic treatments is $0.02$ M$_\odot$.}
-    \label{29maj0007}
+    \caption{The mass-radius relationship for a white dwarf (top) and the mass-radius relationship for a neutron star (bottom). The difference between the maximum mass between the newtonian and relativistic treatments is $0.02$ M$_\odot$ for the white dwarf and $0.94$ M$_\odot$ for the neutron star.}
+    \label{30maj2012}
 \end{figure}
+The whole mass-radius relationships for the white dwarf and the neutron star can be seen in figure \ref{30maj2012}. In these plots one can also see that the relativistic effects are much more prominent for the neutron star than for the white dwarf. The maximum masses of the different stars obtained by the TOV-equations and Newton's equations are summarized in table \ref{30maj2217}. The maximum value for the white dwarf is the familiar Chandrasakhar limit \mbox{$M\approx 1.4$ M$_\odot$}. Hence, we conclude that the newtonian treatment of hydrostatic equilibrium is a good approximation for white dwarfs but not for neutron stars. 
+
+The maximum mass a (non-rotating) neutron star can support is known as the Tolman-Oppenheimer-Volkoff limit and according to these calculations it should be around $M\approx 0.71$ M$_\odot$ which is lower than the Chandrasakhar limit. This is also approximately three times lower than what its value is thought to be, which is around $2.1$ M$_\odot$. This model of the neutron star was first proposed by Oppenheimer and Volkoff in 1939 and since then, it has been shown that the equation of state which is used is an all too simplified model of the dense matter of a neutron star where, for example, the strong interaction between neutrons plays a role.
+
+%\begin{table}[b]
+%\centering
+%\begin{tabular}{c c c c c}
+%    Star & $M_\text{max}$ [M$_\odot$] & $R$ [km] & $P_C$ [eV/fm$^3$] & Theory \\ 
+%    \hline\hline
+%    White dwarf  & 1.416 & 720  & $\approx 20$           & Newton \\ 
+%    White dwarf  & 1.396 & 1020 & $\approx 20$            & GR \\ 
+%    Neutron star & 1.648 & 7.2  & $\approx 4\cdot 10^9$  &Newton \\ 
+%    Neutron star & 0.710 & 9.0  & $\approx 2\cdot 10^8$  & GR \\ 
+%\end{tabular}
+%\end{table}
+%The results for the white dwarf can be seen in figure \ref{29maj0007}. The first plot displays the mass radius relationship for both the relativistic and newtonian treatments while the second figure displays the mass as a function of pressure at the center of the star in a similar way. Similar plots for the neutron star can be seen in figure \ref{29maj0008}.
+%\begin{figure}[h]
+%    \begin{center}
+%        \includegraphics[scale=0.35]{EOS.png}
+%    \end{center}
+%    \caption{The mass-radius relationship for a white dwarf (top) and the mass as a function of pressure in the center of the star (bottom). The difference between the maximum mass between the newtonian and relativistic treatments is $0.02$ M$_\odot$.}
+%    \label{30maj2013}
+%\end{figure}
 %\begin{figure}[t]
 %    \begin{center}
 %        \includegraphics[scale=0.35]{WhiteDwarf_MR.png}
